@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Data.Collections;
 using NSubstitute;
 using Xunit;
@@ -40,15 +41,42 @@ namespace MicroServiceFabric.Dispatcher.Tests
                 () => reliableDispatcher.EnqueueAsync(null));
         }
 
-        public void EnqueueAsync_EnqueuesItemOnReliableQueue() { }
+        [Fact]
+        public async Task EnqueueAsync_EnqueuesItemOnReliableQueue()
+        {
+            var reliableQueue = Substitute.For<IReliableQueue<object>>();
+            var transaction = Substitute.For<ITransaction>();
+            var item = Substitute.For<object>();
+            var reliableDispatcher = CreateReliableDispatcher(reliableQueue, CreateTransactionFactory(transaction));
+
+            await reliableDispatcher.EnqueueAsync(item);
+
+            await reliableQueue
+                .Received()
+                .EnqueueAsync(transaction, item);
+        }
 
         public void EnqueueAsync_CommitsTransactionAfterEnqueuing() { }
 
-        private static IReliableDispatcher<object> CreateReliableDispatcher()
+        public void EnqueueAsync_DisposesTransaction() { }
+
+        private static IReliableDispatcher<object> CreateReliableDispatcher(IReliableQueue<object> reliableQueue = null,
+            ITransactionFactory transactionFactory = null)
         {
             return new ReliableDispatcher<object>(
-                Substitute.For<Lazy<IReliableQueue<object>>>(),
-                Substitute.For<ITransactionFactory>());
+                new Lazy<IReliableQueue<object>>(() => reliableQueue ?? Substitute.For<IReliableQueue<object>>()),
+                transactionFactory ?? Substitute.For<ITransactionFactory>());
+        }
+
+        private static ITransactionFactory CreateTransactionFactory(ITransaction transaction)
+        {
+            var transactionFactory = Substitute.For<ITransactionFactory>();
+
+            transactionFactory
+                .Create()
+                .Returns(transaction);
+
+            return transactionFactory;
         }
     }
 }
