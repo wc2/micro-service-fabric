@@ -93,6 +93,23 @@ namespace MicroServiceFabric.Dispatcher.Tests
                 () => reliableDispatcher.RunAsync(null, default(CancellationToken)));
         }
 
+        [Fact]
+        public async Task RunAsync_CancelsWhenCancellationTokensIsCancelled()
+        {
+            var tokenSource = new CancellationTokenSource();
+            var reliableDispatcher = CreateReliableDispatcher();
+            var task = Task.Factory.StartNew(
+                () => reliableDispatcher.RunAsync(Substitute.For<DispatcherTask<object>>(), tokenSource.Token),
+                default(CancellationToken));
+
+            await Assert.ThrowsAsync<OperationCanceledException>(
+                () =>
+                {
+                    tokenSource.Cancel();
+                    return task;
+                });
+        }
+
         private static IReliableDispatcher<object> CreateReliableDispatcher(IReliableQueue<object> reliableQueue = null,
             ITransactionFactory transactionFactory = null)
         {

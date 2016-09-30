@@ -26,14 +26,19 @@ namespace MicroServiceFabric.Dispatcher
 
             using (var transaction = _transactionFactory.Create())
             {
-                await _reliableQueue.Value.EnqueueAsync(transaction, item);
-                await transaction.CommitAsync(); 
+                await _reliableQueue.Value.EnqueueAsync(transaction, item).ConfigureAwait(false);
+                await transaction.CommitAsync().ConfigureAwait(false);
             }
         }
 
         Task IReliableDispatcher<T>.RunAsync(DispatcherTask<T> dispatcherTask, CancellationToken cancellationToken)
         {
-            throw new ArgumentNullException(nameof(dispatcherTask));
+            Contract.RequiresNotNull(dispatcherTask, nameof(dispatcherTask));
+
+            while (true)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+            }
         }
     }
 }
