@@ -12,8 +12,30 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceFabric.Dispatcher.Tests", "Tests\MicroServiceFabric.Dispatcher.Tests\MicroServiceFabric.Dispatcher.Tests.csproj", "{B32BD806-C2F9-4E36-AF28-FFAC97D818D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceFabric.Dispatcher", "NuGet Libraries\MicroServiceFabric.Dispatcher\MicroServiceFabric.Dispatcher.csproj", "{C330B920-C5E9-4D9A-8E22-0A082BB85410}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B32BD806-C2F9-4E36-AF28-FFAC97D818D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B32BD806-C2F9-4E36-AF28-FFAC97D818D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B32BD806-C2F9-4E36-AF28-FFAC97D818D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B32BD806-C2F9-4E36-AF28-FFAC97D818D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C330B920-C5E9-4D9A-8E22-0A082BB85410}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C330B920-C5E9-4D9A-8E22-0A082BB85410}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C330B920-C5E9-4D9A-8E22-0A082BB85410}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C330B920-C5E9-4D9A-8E22-0A082BB85410}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B32BD806-C2F9-4E36-AF28-FFAC97D818D0} = {314F5341-BBBC-4160-B8E0-60D001BF1D0D}
+		{C330B920-C5E9-4D9A-8E22-0A082BB85410} = {5103B92D-51FC-4675-93FF-7AC42AEACBF1}
 	EndGlobalSection
 EndGlobal
