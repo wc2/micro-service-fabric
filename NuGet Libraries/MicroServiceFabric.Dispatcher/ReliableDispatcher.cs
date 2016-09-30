@@ -10,6 +10,7 @@ namespace MicroServiceFabric.Dispatcher
     {
         private readonly Lazy<IReliableQueue<T>> _reliableQueue;
         private readonly ITransactionFactory _transactionFactory;
+        private bool _isDisposing;
 
         public ReliableDispatcher(Lazy<IReliableQueue<T>> reliableQueue, ITransactionFactory transactionFactory)
         {
@@ -18,6 +19,11 @@ namespace MicroServiceFabric.Dispatcher
 
             _reliableQueue = reliableQueue;
             _transactionFactory = transactionFactory;
+        }
+
+        void IDisposable.Dispose()
+        {
+            _isDisposing = true;
         }
 
         async Task IReliableDispatcher<T>.EnqueueAsync(T item)
@@ -35,10 +41,17 @@ namespace MicroServiceFabric.Dispatcher
         {
             Contract.RequiresNotNull(dispatcherTask, nameof(dispatcherTask));
 
-            while (true)
+            while (!_isDisposing)
             {
                 cancellationToken.ThrowIfCancellationRequested();
             }
+
+            if (_isDisposing)
+            {
+                throw new OperationCanceledException();
+            }
+
+            return Task.FromResult(0);
         }
     }
 }

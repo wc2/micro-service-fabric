@@ -110,6 +110,22 @@ namespace MicroServiceFabric.Dispatcher.Tests
                 });
         }
 
+        [Fact]
+        public async Task Dispose_CancelsRunAsync()
+        {
+            var reliableDispatcher = CreateReliableDispatcher();
+            var task = Task.Factory.StartNew(
+                () => reliableDispatcher.RunAsync(Substitute.For<DispatcherTask<object>>(), default(CancellationToken)),
+                CancellationToken.None);
+
+            await Assert.ThrowsAsync<OperationCanceledException>(
+                () =>
+                {
+                    reliableDispatcher.Dispose();
+                    return task;
+                });
+        }
+
         private static IReliableDispatcher<object> CreateReliableDispatcher(IReliableQueue<object> reliableQueue = null,
             ITransactionFactory transactionFactory = null)
         {
