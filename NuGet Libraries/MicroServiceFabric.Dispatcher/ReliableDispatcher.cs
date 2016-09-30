@@ -19,14 +19,13 @@ namespace MicroServiceFabric.Dispatcher
             _transactionFactory = transactionFactory;
         }
 
-        Task IReliableDispatcher<T>.EnqueueAsync(T item)
+        async Task IReliableDispatcher<T>.EnqueueAsync(T item)
         {
             Contract.RequiresNotNull(item, nameof(item));
 
             var transaction = _transactionFactory.Create();
-            _reliableQueue.Value.EnqueueAsync(transaction, item);
-
-            return Task.FromResult(0);
+            await _reliableQueue.Value.EnqueueAsync(transaction, item);
+            await transaction.CommitAsync();
         }
     }
 }
