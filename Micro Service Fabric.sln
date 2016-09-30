@@ -16,20 +16,26 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceFabric.Dispatch
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceFabric.Dispatcher", "NuGet Libraries\MicroServiceFabric.Dispatcher\MicroServiceFabric.Dispatcher.csproj", "{C330B920-C5E9-4D9A-8E22-0A082BB85410}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceFabric.CodeContracts", "Libraries\MicroServiceFabric.CodeContracts\MicroServiceFabric.CodeContracts.csproj", "{D301A788-D68E-4437-83FB-60BB69D38EE1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B32BD806-C2F9-4E36-AF28-FFAC97D818D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B32BD806-C2F9-4E36-AF28-FFAC97D818D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B32BD806-C2F9-4E36-AF28-FFAC97D818D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B32BD806-C2F9-4E36-AF28-FFAC97D818D0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C330B920-C5E9-4D9A-8E22-0A082BB85410}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C330B920-C5E9-4D9A-8E22-0A082BB85410}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C330B920-C5E9-4D9A-8E22-0A082BB85410}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C330B920-C5E9-4D9A-8E22-0A082BB85410}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B32BD806-C2F9-4E36-AF28-FFAC97D818D0}.Debug|x64.ActiveCfg = Debug|x64
+		{B32BD806-C2F9-4E36-AF28-FFAC97D818D0}.Debug|x64.Build.0 = Debug|x64
+		{B32BD806-C2F9-4E36-AF28-FFAC97D818D0}.Release|x64.ActiveCfg = Release|x64
+		{B32BD806-C2F9-4E36-AF28-FFAC97D818D0}.Release|x64.Build.0 = Release|x64
+		{C330B920-C5E9-4D9A-8E22-0A082BB85410}.Debug|x64.ActiveCfg = Debug|x64
+		{C330B920-C5E9-4D9A-8E22-0A082BB85410}.Debug|x64.Build.0 = Debug|x64
+		{C330B920-C5E9-4D9A-8E22-0A082BB85410}.Release|x64.ActiveCfg = Release|x64
+		{C330B920-C5E9-4D9A-8E22-0A082BB85410}.Release|x64.Build.0 = Release|x64
+		{D301A788-D68E-4437-83FB-60BB69D38EE1}.Debug|x64.ActiveCfg = Debug|x64
+		{D301A788-D68E-4437-83FB-60BB69D38EE1}.Debug|x64.Build.0 = Debug|x64
+		{D301A788-D68E-4437-83FB-60BB69D38EE1}.Release|x64.ActiveCfg = Release|x64
+		{D301A788-D68E-4437-83FB-60BB69D38EE1}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,5 +43,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B32BD806-C2F9-4E36-AF28-FFAC97D818D0} = {314F5341-BBBC-4160-B8E0-60D001BF1D0D}
 		{C330B920-C5E9-4D9A-8E22-0A082BB85410} = {5103B92D-51FC-4675-93FF-7AC42AEACBF1}
+		{D301A788-D68E-4437-83FB-60BB69D38EE1} = {5103B92D-51FC-4675-93FF-7AC42AEACBF1}
 	EndGlobalSection
 EndGlobal
