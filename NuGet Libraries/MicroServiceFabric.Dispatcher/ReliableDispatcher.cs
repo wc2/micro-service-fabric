@@ -10,6 +10,7 @@ namespace MicroServiceFabric.Dispatcher
     public sealed class ReliableDispatcher<T> : IReliableDispatcher<T>
     {
         private readonly Lazy<IReliableQueue<T>> _reliableQueue;
+        private readonly SemaphoreSlim _throttle = new SemaphoreSlim(0, 1);
         private readonly CancellationTokenSource _tokenSource = new CancellationTokenSource();
         private readonly ITransactionFactory _transactionFactory;
 
@@ -36,6 +37,8 @@ namespace MicroServiceFabric.Dispatcher
                 await _reliableQueue.Value.EnqueueAsync(transaction, item).ConfigureAwait(false);
                 await transaction.CommitAsync().ConfigureAwait(false);
             }
+
+            RestartDispatcherIfPaused();
         }
 
         Task IReliableDispatcher<T>.RunAsync(DispatcherTask<T> dispatcherTask, CancellationToken cancellationToken)
@@ -58,7 +61,7 @@ namespace MicroServiceFabric.Dispatcher
                     var item = await GetNextItem(transaction).ConfigureAwait(false);
 
                     await dispatcherTask(transaction, item).ConfigureAwait(false);
-                    await transaction.CommitAsync().ConfigureAwait(false); 
+                    await transaction.CommitAsync().ConfigureAwait(false);
                 }
             }
         }
@@ -76,7 +79,15 @@ namespace MicroServiceFabric.Dispatcher
 
             if (isQueueEmpty)
             {
-                await Task.Delay(-1, _tokenSource.Token).ConfigureAwait(false);
+                await _throttle.WaitAsync(_tokenSource.Token).ConfigureAwait(false);
+            }
+        }
+
+        private void RestartDispatcherIfPaused()
+        {
+            if (_throttle.CurrentCount == 0)
+            {
+                _throttle.Release();
             }
         }
 

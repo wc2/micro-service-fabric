@@ -93,7 +93,7 @@ namespace MicroServiceFabric.Dispatcher.Tests
             var reliableDispatcher = CreateReliableDispatcher();
             var task = reliableDispatcher.RunAsync(Substitute.For<DispatcherTask<object>>(), default(CancellationToken));
 
-            await Assert.ThrowsAsync<TaskCanceledException>(
+            await Assert.ThrowsAsync<OperationCanceledException>(
                 () =>
                 {
                     reliableDispatcher.Dispose();
@@ -121,7 +121,7 @@ namespace MicroServiceFabric.Dispatcher.Tests
 
             tokenSource.Cancel();
 
-            await Assert.ThrowsAsync<TaskCanceledException>(() => task).ConfigureAwait(false);
+            await Assert.ThrowsAsync<OperationCanceledException>(() => task).ConfigureAwait(false);
         }
 
         [Fact]
@@ -166,7 +166,7 @@ namespace MicroServiceFabric.Dispatcher.Tests
 
                 await dispatcherTask
                     .Received(numberOfItemsAlreadyInQueue)
-                    .Invoke(Arg.Any<ITransaction>(), Arg.Any<object>())
+                    .Invoke(Arg.Is<ITransaction>(tx => tx != null), Arg.Any<object>())
                     .ConfigureAwait(false);
             }
 
@@ -198,6 +198,38 @@ namespace MicroServiceFabric.Dispatcher.Tests
                 .ConfigureAwait(false);
         }
 
+        [Fact]
+        public async Task RunAsync_EnqueueAsyncRestartsDispatcher()
+        {
+            var dispatcherTask = Substitute.For<DispatcherTask<object>>();
+            var item = Substitute.For<object>();
+
+            var reliableQueue = Substitute.For<IReliableQueue<object>>();
+            reliableQueue
+                .GetCountAsync(Arg.Is<ITransaction>(tx => tx != null))
+                .Returns(0);
+            reliableQueue
+                .TryDequeueAsync(Arg.Is<ITransaction>(tx => tx != null), Arg.Any<TimeSpan>(),
+                    Arg.Any<CancellationToken>())
+                .Returns(ConditionalItem(item));
+
+            Task task;
+            using (var reliableDispatcher = CreateReliableDispatcher(reliableQueue))
+            {
+                task = reliableDispatcher.RunAsync(dispatcherTask, CancellationToken.None);
+
+                await reliableDispatcher.EnqueueAsync(item).ConfigureAwait(false);
+                await Task.Delay(250).ConfigureAwait(false);
+            }
+
+            await dispatcherTask
+                .Received(1)
+                .Invoke(Arg.Is<ITransaction>(tx => tx != null), item)
+                .ConfigureAwait(false);
+
+            await DispatcherCompletionAsync(task).ConfigureAwait(false);
+        }
+
         private static IReliableDispatcher<object> CreateReliableDispatcher(IReliableQueue<object> reliableQueue = null,
             ITransactionFactory transactionFactory = null)
         {
@@ -222,7 +254,7 @@ namespace MicroServiceFabric.Dispatcher.Tests
             var reliableQueue = Substitute.For<IReliableQueue<object>>();
 
             reliableQueue
-                .GetCountAsync(Arg.Any<ITransaction>())
+                .GetCountAsync(Arg.Is<ITransaction>(tx => tx != null))
                 .Returns(
                     returnThis: Task.FromResult(1L),
                     returnThese: items.Skip(1).Select(i => 1L).Concat(new[] {0L}).Select(Task.FromResult).ToArray());
@@ -247,7 +279,7 @@ namespace MicroServiceFabric.Dispatcher.Tests
             {
                 await test.ConfigureAwait(false);
             }
-            catch (TaskCanceledException) { }
+            catch (OperationCanceledException) { }
         }
     }
 }
