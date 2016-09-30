@@ -1,18 +1,21 @@
 ﻿using System;
+using System.Threading.Tasks;
+using MicroServiceFabric.CodeContracts;
 using Microsoft.ServiceFabric.Data.Collections;
 
 namespace MicroServiceFabric.Dispatcher
 {
-    public sealed class ReliableDispatcher<T>
+    public sealed class ReliableDispatcher<T> : IReliableDispatcher<T>
     {
         public ReliableDispatcher(Lazy<IReliableQueue<T>> reliableQueue, ITransactionFactory transactionFactory)
         {
-            if (reliableQueue == null)
-            {
-                throw new ArgumentNullException(nameof(reliableQueue)); 
-            }
+            Contract.RequiresNotNull(reliableQueue, nameof(reliableQueue));
+            Contract.RequiresNotNull(transactionFactory, nameof(transactionFactory));
+        }
 
-            throw new ArgumentNullException(nameof(transactionFactory));
+        Task IReliableDispatcher<T>.EnqueueAsync(T item)
+        {
+            throw new ArgumentNullException(nameof(item));
         }
     }
 }

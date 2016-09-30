@@ -66,12 +66,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IReliableDispatcher.cs" />
     <Compile Include="ITransactionFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReliableDispatcher.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\MicroServiceFabric.CodeContracts\MicroServiceFabric.CodeContracts.csproj">
+      <Project>{d301a788-d68e-4437-83fb-60bb69d38ee1}</Project>
+      <Name>MicroServiceFabric.CodeContracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
