@@ -66,6 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DispatcherTask.cs" />
     <Compile Include="IReliableDispatcher.cs" />
     <Compile Include="ITransactionFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Data.Collections;
@@ -80,6 +81,16 @@ namespace MicroServiceFabric.Dispatcher.Tests
             transaction
                 .Received()
                 .Dispose();
+        }
+
+        [Fact]
+        public async Task RunAsync_DispatcherTask()
+        {
+            var reliableDispatcher = CreateReliableDispatcher();
+
+            await Assert.ThrowsAsync<ArgumentNullException>(
+                "handler",
+                () => reliableDispatcher.RunAsync(null, default(CancellationToken)));
         }
 
         private static IReliableDispatcher<object> CreateReliableDispatcher(IReliableQueue<object> reliableQueue = null,

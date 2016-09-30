@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace MicroServiceFabric.Dispatcher
 {
-    public interface IReliableDispatcher<in T>
+    public interface IReliableDispatcher<T>
     {
         Task EnqueueAsync(T item);
+        Task RunAsync(DispatcherTask<T> dispatcherTask, CancellationToken cancellationToken);
     }
 }
