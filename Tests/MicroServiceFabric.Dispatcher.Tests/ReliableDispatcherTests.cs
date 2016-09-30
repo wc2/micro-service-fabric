@@ -69,7 +69,18 @@ namespace MicroServiceFabric.Dispatcher.Tests
                 .CommitAsync();
         }
 
-        public void EnqueueAsync_DisposesTransaction() { }
+        [Fact]
+        public async Task EnqueueAsync_DisposesTransaction()
+        {
+            var transaction = Substitute.For<ITransaction>();
+            var reliableDispatcher = CreateReliableDispatcher(transactionFactory: CreateTransactionFactory(transaction));
+
+            await reliableDispatcher.EnqueueAsync(Substitute.For<object>());
+
+            transaction
+                .Received()
+                .Dispose();
+        }
 
         private static IReliableDispatcher<object> CreateReliableDispatcher(IReliableQueue<object> reliableQueue = null,
             ITransactionFactory transactionFactory = null)

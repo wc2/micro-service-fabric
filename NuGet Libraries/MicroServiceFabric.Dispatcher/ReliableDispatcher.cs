@@ -23,9 +23,11 @@ namespace MicroServiceFabric.Dispatcher
         {
             Contract.RequiresNotNull(item, nameof(item));
 
-            var transaction = _transactionFactory.Create();
-            await _reliableQueue.Value.EnqueueAsync(transaction, item);
-            await transaction.CommitAsync();
+            using (var transaction = _transactionFactory.Create())
+            {
+                await _reliableQueue.Value.EnqueueAsync(transaction, item);
+                await transaction.CommitAsync(); 
+            }
         }
     }
 }
