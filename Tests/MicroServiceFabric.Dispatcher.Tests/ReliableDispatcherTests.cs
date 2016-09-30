@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.ServiceFabric.Data.Collections;
 using NSubstitute;
 using Xunit;
 
@@ -15,10 +16,18 @@ namespace MicroServiceFabric.Dispatcher.Tests
                     new ReliableDispatcher<object>(
                         null,
                         Substitute.For<ITransactionFactory>()));
-
         }
 
-        public void ctor_TransactionFactoryRequired() { }
+        [Fact]
+        public void ctor_TransactionFactoryRequired()
+        {
+            Assert.Throws<ArgumentNullException>(
+                "transactionFactory",
+                () =>
+                    new ReliableDispatcher<object>(
+                        Substitute.For<Lazy<IReliableQueue<object>>>(),
+                        null));
+        }
 
         public void EnqueueAsync_ItemRequired() { }
 

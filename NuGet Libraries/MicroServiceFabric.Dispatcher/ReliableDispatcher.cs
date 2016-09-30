@@ -7,7 +7,12 @@ namespace MicroServiceFabric.Dispatcher
     {
         public ReliableDispatcher(Lazy<IReliableQueue<T>> reliableQueue, ITransactionFactory transactionFactory)
         {
-            throw new ArgumentNullException(nameof(reliableQueue));
+            if (reliableQueue == null)
+            {
+                throw new ArgumentNullException(nameof(reliableQueue)); 
+            }
+
+            throw new ArgumentNullException(nameof(transactionFactory));
         }
     }
 }
