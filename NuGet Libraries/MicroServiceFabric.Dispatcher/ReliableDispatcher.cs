@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MicroServiceFabric.CodeContracts;
+using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Data.Collections;
 
 namespace MicroServiceFabric.Dispatcher
@@ -9,8 +10,8 @@ namespace MicroServiceFabric.Dispatcher
     public sealed class ReliableDispatcher<T> : IReliableDispatcher<T>
     {
         private readonly Lazy<IReliableQueue<T>> _reliableQueue;
+        private readonly CancellationTokenSource _tokenSource = new CancellationTokenSource();
         private readonly ITransactionFactory _transactionFactory;
-        private bool _isDisposing;
 
         public ReliableDispatcher(Lazy<IReliableQueue<T>> reliableQueue, ITransactionFactory transactionFactory)
         {
@@ -23,7 +24,7 @@ namespace MicroServiceFabric.Dispatcher
 
         void IDisposable.Dispose()
         {
-            _isDisposing = true;
+            StopDispatcher();
         }
 
         async Task IReliableDispatcher<T>.EnqueueAsync(T item)
@@ -40,18 +41,51 @@ namespace MicroServiceFabric.Dispatcher
         Task IReliableDispatcher<T>.RunAsync(DispatcherTask<T> dispatcherTask, CancellationToken cancellationToken)
         {
             Contract.RequiresNotNull(dispatcherTask, nameof(dispatcherTask));
+            cancellationToken.Register(StopDispatcher, false);
 
-            while (!_isDisposing)
+            return StartDispatcherAsync(dispatcherTask);
+        }
+
+        private void StopDispatcher()
+        {
+            _tokenSource.Cancel();
+        }
+
+        private async Task StartDispatcherAsync(DispatcherTask<T> dispatcherTask)
+        {
+            while (true)
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                await MessageIsEnqueuedAsync().ConfigureAwait(false);
+                _tokenSource.Token.ThrowIfCancellationRequested();
+
+                var transaction = _transactionFactory.Create();
+                var item = await GetNextItem(transaction).ConfigureAwait(false);
+                await dispatcherTask(transaction, item).ConfigureAwait(false);
+            }
+        }
+
+        private async Task MessageIsEnqueuedAsync()
+        {
+            bool isQueueEmpty;
+
+            using (var transaction = _transactionFactory.Create())
+            {
+                isQueueEmpty = await _reliableQueue.Value.GetCountAsync(transaction).ConfigureAwait(false) == 0;
+                await transaction.CommitAsync().ConfigureAwait(false);
             }
 
-            if (_isDisposing)
+            if (isQueueEmpty)
             {
-                throw new OperationCanceledException();
+                await Task.Delay(-1, _tokenSource.Token).ConfigureAwait(false);
             }
+        }
 
-            return Task.FromResult(0);
+        private async Task<T> GetNextItem(ITransaction transaction)
+        {
+            return
+                (await
+                    _reliableQueue.Value.TryDequeueAsync(transaction, default(TimeSpan), _tokenSource.Token)
+                        .ConfigureAwait(false)).Value;
         }
     }
 }
