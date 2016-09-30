@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -128,10 +127,10 @@ namespace MicroServiceFabric.Dispatcher.Tests
         [Fact]
         public async Task RunAsync_DoesNotDequeueWhenQueueIsEmpty()
         {
-            Task task;
             var reliableQueue = Substitute.For<IReliableQueue<object>>();
 
-            using (var reliableDispatcher = CreateReliableDispatcher())
+            Task task;
+            using (var reliableDispatcher = CreateReliableDispatcher(reliableQueue))
             {
                 task = reliableDispatcher.RunAsync(Substitute.For<DispatcherTask<object>>(), CancellationToken.None);
 
@@ -150,19 +149,20 @@ namespace MicroServiceFabric.Dispatcher.Tests
         [InlineData(3)]
         public async Task RunAsync_DispatchesItemsAlreadyInQueue(int numberOfItemsAlreadyInQueue)
         {
-            Task task;
             var dispatcherTask = Substitute.For<DispatcherTask<object>>();
-            var items = Enumerable.Range(1, numberOfItemsAlreadyInQueue).Select(i => Substitute.For<object>()).ToList();
+            var items = Enumerable.Range(1, numberOfItemsAlreadyInQueue).Select(i => Substitute.For<object>()).ToArray();
 
+            Task task;
             using (var reliableDispatcher = CreateReliableDispatcher(CreateReliableQueue(items)))
             {
                 task = reliableDispatcher.RunAsync(dispatcherTask, CancellationToken.None);
 
                 items
+                    .ToList()
                     .ForEach(item =>
                         dispatcherTask
                             .Received()
-                            .Invoke(Arg.Any<ITransaction>(), item));
+                            .Invoke(Arg.Is<ITransaction>(tx => tx != null), item));
 
                 await dispatcherTask
                     .Received(numberOfItemsAlreadyInQueue)
@@ -171,6 +171,31 @@ namespace MicroServiceFabric.Dispatcher.Tests
             }
 
             await DispatcherCompletionAsync(task).ConfigureAwait(false);
+        }
+
+        [Fact]
+        public async Task RunAsync_CommitsGetItemTransaction()
+        {
+            var getCountTransaction = Substitute.For<ITransaction>();
+            var getItemTransaction = Substitute.For<ITransaction>();
+
+            var transactionFactory = Substitute.For<ITransactionFactory>();
+            transactionFactory
+                .Create()
+                .Returns(getCountTransaction, getItemTransaction, getCountTransaction);
+
+            Task task;
+            using (var reliableDispatcher = CreateReliableDispatcher(CreateReliableQueue(Substitute.For<object>()), transactionFactory))
+            {
+                task = reliableDispatcher.RunAsync(Substitute.For<DispatcherTask<object>>(), CancellationToken.None);
+            }
+
+            await DispatcherCompletionAsync(task).ConfigureAwait(false);
+
+            await getItemTransaction
+                .Received()
+                .CommitAsync()
+                .ConfigureAwait(false);
         }
 
         private static IReliableDispatcher<object> CreateReliableDispatcher(IReliableQueue<object> reliableQueue = null,
@@ -192,7 +217,7 @@ namespace MicroServiceFabric.Dispatcher.Tests
             return transactionFactory;
         }
 
-        private static IReliableQueue<object> CreateReliableQueue(List<object> items)
+        private static IReliableQueue<object> CreateReliableQueue(params object[] items)
         {
             var reliableQueue = Substitute.For<IReliableQueue<object>>();
 
@@ -203,7 +228,7 @@ namespace MicroServiceFabric.Dispatcher.Tests
                     returnThese: items.Skip(1).Select(i => 1L).Concat(new[] {0L}).Select(Task.FromResult).ToArray());
 
             reliableQueue
-                .TryDequeueAsync(Arg.Any<ITransaction>(), Arg.Any<TimeSpan>(), Arg.Any<CancellationToken>())
+                .TryDequeueAsync(Arg.Is<ITransaction>(tx => tx != null), Arg.Any<TimeSpan>(), Arg.Any<CancellationToken>())
                 .Returns(
                     returnThis: ConditionalItem(items.First()),
                     returnThese: items.Skip(1).Select(ConditionalItem).ToArray());

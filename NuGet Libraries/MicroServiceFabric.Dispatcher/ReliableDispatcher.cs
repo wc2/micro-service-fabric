@@ -46,11 +46,6 @@ namespace MicroServiceFabric.Dispatcher
             return StartDispatcherAsync(dispatcherTask);
         }
 
-        private void StopDispatcher()
-        {
-            _tokenSource.Cancel();
-        }
-
         private async Task StartDispatcherAsync(DispatcherTask<T> dispatcherTask)
         {
             while (true)
@@ -58,9 +53,13 @@ namespace MicroServiceFabric.Dispatcher
                 await MessageIsEnqueuedAsync().ConfigureAwait(false);
                 _tokenSource.Token.ThrowIfCancellationRequested();
 
-                var transaction = _transactionFactory.Create();
-                var item = await GetNextItem(transaction).ConfigureAwait(false);
-                await dispatcherTask(transaction, item).ConfigureAwait(false);
+                using (var transaction = _transactionFactory.Create())
+                {
+                    var item = await GetNextItem(transaction).ConfigureAwait(false);
+
+                    await dispatcherTask(transaction, item).ConfigureAwait(false);
+                    await transaction.CommitAsync().ConfigureAwait(false); 
+                }
             }
         }
 
@@ -71,6 +70,7 @@ namespace MicroServiceFabric.Dispatcher
             using (var transaction = _transactionFactory.Create())
             {
                 isQueueEmpty = await _reliableQueue.Value.GetCountAsync(transaction).ConfigureAwait(false) == 0;
+
                 await transaction.CommitAsync().ConfigureAwait(false);
             }
 
@@ -86,6 +86,11 @@ namespace MicroServiceFabric.Dispatcher
                 (await
                     _reliableQueue.Value.TryDequeueAsync(transaction, default(TimeSpan), _tokenSource.Token)
                         .ConfigureAwait(false)).Value;
+        }
+
+        private void StopDispatcher()
+        {
+            _tokenSource.Cancel();
         }
     }
 }
