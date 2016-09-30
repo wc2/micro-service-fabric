@@ -5,7 +5,7 @@ Repository containing packages for working with [Service Fabric](https://azure.m
 ## Components
 
 | Component | Description | NuGet |
-| _________ | ___________ | _____ |
+| --------- | ----------- | ----- |
 | MicroServiceFabric.Actors | Package for bootstrapping Service Fabric [Actors](https://azure.microsoft.com/en-us/documentation/articles/service-fabric-reliable-actors-introduction/). | |
 | MicroServiceFabric.MessagePump | Package providing a reliable message pump. The message pump builds upon the Service Fabric [IReliableQueue](https://msdn.microsoft.com/en-us/library/azure/dn971527.aspx?f=255&MSPPError=-2147217396).  |  |
 | MicroServiceFabric.Logging | Package for providing common logging functionality. | |
