@@ -89,7 +89,7 @@ namespace MicroServiceFabric.Dispatcher.Tests
             var reliableDispatcher = CreateReliableDispatcher();
 
             await Assert.ThrowsAsync<ArgumentNullException>(
-                "handler",
+                "dispatcherTask",
                 () => reliableDispatcher.RunAsync(null, default(CancellationToken)));
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MicroServiceFabric.CodeContracts;
 using Microsoft.ServiceFabric.Data.Collections;
@@ -28,6 +29,11 @@ namespace MicroServiceFabric.Dispatcher
                 await _reliableQueue.Value.EnqueueAsync(transaction, item);
                 await transaction.CommitAsync(); 
             }
+        }
+
+        Task IReliableDispatcher<T>.RunAsync(DispatcherTask<T> dispatcherTask, CancellationToken cancellationToken)
+        {
+            throw new ArgumentNullException(nameof(dispatcherTask));
         }
     }
 }
