@@ -162,11 +162,17 @@ namespace MicroServiceFabric.Dispatcher.Tests
                     .ForEach(item =>
                         dispatcherTask
                             .Received()
-                            .Invoke(Arg.Is<ITransaction>(tx => tx != null), item));
+                            .Invoke(
+                                Arg.Is<ITransaction>(tx => tx != null),
+                                item,
+                                Arg.Is<CancellationToken>(t => t !=  default(CancellationToken))));
 
                 await dispatcherTask
                     .Received(numberOfItemsAlreadyInQueue)
-                    .Invoke(Arg.Is<ITransaction>(tx => tx != null), Arg.Any<object>())
+                    .Invoke(
+                        Arg.Is<ITransaction>(tx => tx != null),
+                        Arg.Any<object>(),
+                        Arg.Is<CancellationToken>(t => t != default(CancellationToken)))
                     .ConfigureAwait(false);
             }
 
@@ -224,7 +230,7 @@ namespace MicroServiceFabric.Dispatcher.Tests
 
             await dispatcherTask
                 .Received(1)
-                .Invoke(Arg.Is<ITransaction>(tx => tx != null), item)
+                .Invoke(Arg.Is<ITransaction>(tx => tx != null), item, Arg.Is<CancellationToken>(t => t != default(CancellationToken)))
                 .ConfigureAwait(false);
 
             await DispatcherCompletionAsync(task).ConfigureAwait(false);

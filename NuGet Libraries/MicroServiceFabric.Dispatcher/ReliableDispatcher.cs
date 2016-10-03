@@ -60,7 +60,7 @@ namespace MicroServiceFabric.Dispatcher
                 {
                     var item = await GetNextItem(transaction).ConfigureAwait(false);
 
-                    await dispatcherTask(transaction, item).ConfigureAwait(false);
+                    await dispatcherTask(transaction, item, _tokenSource.Token).ConfigureAwait(false);
                     await transaction.CommitAsync().ConfigureAwait(false);
                 }
             }
