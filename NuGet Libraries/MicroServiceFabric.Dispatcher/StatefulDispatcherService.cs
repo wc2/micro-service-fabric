@@ -1,0 +1,41 @@
+using System;
+using System.Fabric;
+using System.Threading;
+using System.Threading.Tasks;
+using MicroServiceFabric.CodeContracts;
+using Microsoft.ServiceFabric.Data;
+using Microsoft.ServiceFabric.Services.Runtime;
+
+namespace MicroServiceFabric.Dispatcher
+{
+    public abstract class StatefulDispatcherService<T> : StatefulService, IDisposable
+    {
+        protected readonly IReliableDispatcher<T> ReliableDispatcher;
+
+        protected StatefulDispatcherService(StatefulServiceContext serviceContext,
+            IReliableDispatcher<T> reliableDispatcher) : base(serviceContext)
+        {
+            Contract.RequiresNotNull(reliableDispatcher, nameof(reliableDispatcher));
+
+            ReliableDispatcher = reliableDispatcher;
+        }
+
+        void IDisposable.Dispose()
+        {
+            ReliableDispatcher.Dispose();
+        }
+
+        protected override Task RunAsync(CancellationToken cancellationToken)
+        {
+            return RunDispatcherAsync(cancellationToken);
+        }
+
+        internal Task RunDispatcherAsync(CancellationToken cancellationToken)
+        {
+            return ReliableDispatcher.RunAsync(OnItemDispatched, cancellationToken);
+        }
+
+        public abstract Task OnItemDispatched(ITransaction transaction, T item,
+            CancellationToken cancellationToken);
+    }
+}

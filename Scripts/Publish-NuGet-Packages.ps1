@@ -1,0 +1,1 @@
+﻿Get-ChildItem *.nupkg | ForEach-Object { NuGet push $_ -Source https://www.nuget.org/api/v2/package }
