@@ -4,10 +4,14 @@ Repository containing packages for working with [Service Fabric](https://azure.m
 
 ## Contents
 
-* Components
 * Getting started
+* Components
 * License
 * Copyright
+
+## Getting started
+
+See the [Wiki](https://github.com/wc2/micro-service-fabric/wiki) for information on how to get started.
 
 ## Components
 
@@ -20,13 +24,9 @@ Repository containing packages for working with [Service Fabric](https://azure.m
 | MicroServiceFabric.Services.StatelessService | Package for bootstrapping Service Fabric [Stateless Services](https://azure.microsoft.com/en-us/documentation/articles/service-fabric-reliable-services-introduction/). | |
 | MicroServiceFabric.Services.StatelessService.Owin | Package for bootstrapping Service Fabric [Stateless Services](https://azure.microsoft.com/en-us/documentation/articles/service-fabric-reliable-services-introduction/) that expose OWIN-hosted applications, such as Web APIs. | |
 
-## Getting started
-
-See the [Wiki](https://github.com/wc2/micro-service-fabric/wiki) for information on how to get started.
-
 ## License
 
-NGauge is released under Apache License 2.0
+**Micro Service Fabric** is released under [Apache License 2.0](https://raw.githubusercontent.com/wc2/micro-service-fabric/master/LICENSE.txt).
 
 ## Copyright
 
