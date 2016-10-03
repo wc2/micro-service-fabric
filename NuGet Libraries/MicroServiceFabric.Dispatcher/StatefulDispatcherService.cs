@@ -10,18 +10,19 @@ namespace MicroServiceFabric.Dispatcher
 {
     public abstract class StatefulDispatcherService<T> : StatefulService, IDisposable
     {
-        private readonly IReliableDispatcher<T> _reliableDispatcher;
+        protected readonly IReliableDispatcher<T> ReliableDispatcher;
 
         protected StatefulDispatcherService(StatefulServiceContext serviceContext,
             IReliableDispatcher<T> reliableDispatcher) : base(serviceContext)
         {
-            _reliableDispatcher = reliableDispatcher;
             Contract.RequiresNotNull(reliableDispatcher, nameof(reliableDispatcher));
+
+            ReliableDispatcher = reliableDispatcher;
         }
 
         void IDisposable.Dispose()
         {
-            _reliableDispatcher.Dispose();
+            ReliableDispatcher.Dispose();
         }
 
         protected override Task RunAsync(CancellationToken cancellationToken)
@@ -31,10 +32,10 @@ namespace MicroServiceFabric.Dispatcher
 
         internal Task RunDispatcherAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return ReliableDispatcher.RunAsync(OnItemDispatched, cancellationToken);
         }
 
-        protected internal abstract Task OnItemDispatched(ITransaction transaction, T item,
+        public abstract Task OnItemDispatched(ITransaction transaction, T item,
             CancellationToken cancellationToken);
     }
 }
