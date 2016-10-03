@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{314F5341
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8986BF8A-F7EB-483B-BE5E-5030BB4FBFCF}"
 	ProjectSection(SolutionItems) = preProject
+		Common\CommonAssemblyInfo.cs = Common\CommonAssemblyInfo.cs
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -17,6 +18,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceFabric.Dispatcher", "NuGet Libraries\MicroServiceFabric.Dispatcher\MicroServiceFabric.Dispatcher.csproj", "{C330B920-C5E9-4D9A-8E22-0A082BB85410}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceFabric.CodeContracts", "Libraries\MicroServiceFabric.CodeContracts\MicroServiceFabric.CodeContracts.csproj", "{D301A788-D68E-4437-83FB-60BB69D38EE1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{8D64654B-58D1-48A1-A402-55C9BBC271DB}"
+	ProjectSection(SolutionItems) = preProject
+		Common\CommonAssemblyInfo.cs = Common\CommonAssemblyInfo.cs
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

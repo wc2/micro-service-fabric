@@ -111,6 +111,9 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="..\..\Common\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReliableDispatcherTests.cs" />
     <Compile Include="StatefulDispatcherServiceTests.cs" />
