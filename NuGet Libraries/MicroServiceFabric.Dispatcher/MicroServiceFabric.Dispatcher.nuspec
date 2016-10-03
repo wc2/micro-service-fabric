@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://raw.githubusercontent.com/wc2/micro-service-fabric/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/wc2/micro-service-fabric</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>$description$</description>
+    <summary>Simple event dispatcher (ReliableDispatcher) and an abstract service implementation of an event dispatcher (StatefulDispatcherService). The dispatcher builds upon the Service Fabric IReliableQueue.</summary>
+    <copyright>Copyright 2016 William Cowell Consulting Limited. All rights reserved.</copyright>
+    <tags>Service Fabric Reliable Queue Dispatcher Event Loop Stateful Service</tags>
+  </metadata>
+</package>

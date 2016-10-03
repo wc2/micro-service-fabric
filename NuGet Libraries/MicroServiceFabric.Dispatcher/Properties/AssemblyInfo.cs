@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Reliable Dispatcher")]
-[assembly: AssemblyDescription("Provides an [event dispatcher](https://en.wikipedia.org/wiki/Event_loop) (ReliableDispatcher) and an abstract service implementation of an event dispatcher (StatefulDispatcherService). The dispatcher builds upon the Service Fabric [IReliableQueue](https://msdn.microsoft.com/en-us/library/azure/dn971527.aspx?f=255&MSPPError=-2147217396).")]
+[assembly: AssemblyDescription("Simple event loop and service implementing an event loop for Service Fabric.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCulture("")]
 
