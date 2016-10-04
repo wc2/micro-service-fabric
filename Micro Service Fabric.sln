@@ -34,6 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceFabric.Bootstrap.StatelessServices", "NuGet Libraries\MicroServiceFabric.Bootstrap.StatelessServices\MicroServiceFabric.Bootstrap.StatelessServices.csproj", "{A01C2627-90C3-4036-AAED-6B6ED7B8B8E3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceFabric.Bootstrap.StatefulServices", "NuGet Libraries\MicroServiceFabric.Bootstrap.StatefulServices\MicroServiceFabric.Bootstrap.StatefulServices.csproj", "{225D9713-57EB-4F97-8030-DFC35E9CC491}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,14 @@ Global
 		{A01C2627-90C3-4036-AAED-6B6ED7B8B8E3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A01C2627-90C3-4036-AAED-6B6ED7B8B8E3}.Release|x64.ActiveCfg = Release|Any CPU
 		{A01C2627-90C3-4036-AAED-6B6ED7B8B8E3}.Release|x64.Build.0 = Release|Any CPU
+		{225D9713-57EB-4F97-8030-DFC35E9CC491}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{225D9713-57EB-4F97-8030-DFC35E9CC491}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{225D9713-57EB-4F97-8030-DFC35E9CC491}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{225D9713-57EB-4F97-8030-DFC35E9CC491}.Debug|x64.Build.0 = Debug|Any CPU
+		{225D9713-57EB-4F97-8030-DFC35E9CC491}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{225D9713-57EB-4F97-8030-DFC35E9CC491}.Release|Any CPU.Build.0 = Release|Any CPU
+		{225D9713-57EB-4F97-8030-DFC35E9CC491}.Release|x64.ActiveCfg = Release|Any CPU
+		{225D9713-57EB-4F97-8030-DFC35E9CC491}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,5 +87,6 @@ Global
 		{C330B920-C5E9-4D9A-8E22-0A082BB85410} = {5103B92D-51FC-4675-93FF-7AC42AEACBF1}
 		{D301A788-D68E-4437-83FB-60BB69D38EE1} = {B193BEA6-770F-4506-81EC-DE47975A4F7B}
 		{A01C2627-90C3-4036-AAED-6B6ED7B8B8E3} = {5103B92D-51FC-4675-93FF-7AC42AEACBF1}
+		{225D9713-57EB-4F97-8030-DFC35E9CC491} = {5103B92D-51FC-4675-93FF-7AC42AEACBF1}
 	EndGlobalSection
 EndGlobal
