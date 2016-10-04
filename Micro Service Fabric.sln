@@ -24,6 +24,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{8D6465
 		Common\CommonAssemblyInfo.cs = Common\CommonAssemblyInfo.cs
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{B5B33112-59E3-4DD2-BCA7-D69CDA86E85F}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\Create-NuGet-Packages.ps1 = Scripts\Create-NuGet-Packages.ps1
+		Scripts\Publish-NuGet-Packages.ps1 = Scripts\Publish-NuGet-Packages.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
