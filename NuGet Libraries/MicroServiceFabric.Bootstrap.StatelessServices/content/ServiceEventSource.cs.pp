@@ -7,7 +7,7 @@ using MicroServiceFabric.Bootstrap.StatelessServices;
 namespace $rootnamespace$
 {
     // TODO: Enter the name of your service here
-    [EventSource(Name = "EventGenius-Users-UsersService")]
+    [EventSource(Name = "ENTER-YOUR-APP-NAME-HERE")]
     internal sealed class ServiceEventSource : EventSource, IStatelessServiceEventSource
     {
         static ServiceEventSource()
