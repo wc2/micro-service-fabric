@@ -9,7 +9,7 @@ using SimpleInjector.Modules;
 
 namespace MicroServiceFabric.Bootstrap.StatefulServices
 {
-    public static class Bootstrap<TStatelessServiceModule> where TStatelessServiceModule : Module, new()
+    public static class Bootstrap<TStatefulServiceModule> where TStatefulServiceModule : Module, new()
     {
         public static void Start<TService>() where TService : StatefulService
         {
@@ -59,7 +59,7 @@ namespace MicroServiceFabric.Bootstrap.StatefulServices
 
             container.Register(() => context);
             container.Register(() => stateManager);
-            container.RegisterModule<TStatelessServiceModule>();
+            container.RegisterModule<TStatefulServiceModule>();
             container.Verify();
 
             return container;

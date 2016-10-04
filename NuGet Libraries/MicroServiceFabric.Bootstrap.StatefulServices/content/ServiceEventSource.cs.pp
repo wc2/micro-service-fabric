@@ -2,13 +2,13 @@
 using System.Diagnostics.Tracing;
 using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Services.Runtime;
-using MicroServiceFabric.Bootstrap.StatelessServices;
+using MicroServiceFabric.Bootstrap.StatefulServices;
 
 namespace $rootnamespace$
 {
     // TODO: Enter the name of your service here
     [EventSource(Name = "ENTER-YOUR-APP-NAME-HERE")]
-    internal sealed class ServiceEventSource : EventSource, IStatelessServiceEventSource
+    internal sealed class ServiceEventSource : EventSource, IStatefulServiceEventSource
     {
         static ServiceEventSource()
         {
@@ -58,7 +58,7 @@ namespace $rootnamespace$
         }
 
         [NonEvent]
-        public void ServiceMessage(StatelessService service, string message, params object[] args)
+        public void ServiceMessage(StatefulService service, string message, params object[] args)
         {
             if (this.IsEnabled())
             {
