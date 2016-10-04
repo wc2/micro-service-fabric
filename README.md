@@ -18,8 +18,8 @@ See the [Wiki](https://github.com/wc2/micro-service-fabric/wiki) for information
 | Component | Description |
 | --------- | ----------- |
 | MicroServiceFabric.Bootstrap.Actors | Package for bootstrapping Service Fabric [Actors](https://azure.microsoft.com/en-us/documentation/articles/service-fabric-reliable-actors-introduction/). |
-| MicroServiceFabric.Bootstrap.StatefulService | Package for bootstrapping Service Fabric [Stateful Services](https://azure.microsoft.com/en-us/documentation/articles/service-fabric-reliable-services-introduction/). |
-| MicroServiceFabric.Bootstrap.StatelessService | Package for bootstrapping Service Fabric [Stateless Services](https://azure.microsoft.com/en-us/documentation/articles/service-fabric-reliable-services-introduction/). |
+| [MicroServiceFabric.Bootstrap.StatefulService](https://www.nuget.org/packages/MicroServiceFabric.Bootstrap.StatefulServices/) | Package for bootstrapping Service Fabric [Stateful Services](https://azure.microsoft.com/en-us/documentation/articles/service-fabric-reliable-services-introduction/). |
+| [MicroServiceFabric.Bootstrap.StatelessService](https://www.nuget.org/packages/MicroServiceFabric.Bootstrap.StatelessServices/) | Package for bootstrapping Service Fabric [Stateless Services](https://azure.microsoft.com/en-us/documentation/articles/service-fabric-reliable-services-introduction/). |
 | MicroServiceFabric.Bootstrap.StatelessService.Owin | Package for bootstrapping Service Fabric [Stateless Services](https://azure.microsoft.com/en-us/documentation/articles/service-fabric-reliable-services-introduction/) that expose OWIN-hosted applications, such as Web APIs. |
 | [MicroServiceFabric.Dispatcher](https://www.nuget.org/packages/MicroServiceFabric.Dispatcher/) | Package providing an [event dispatcher](https://en.wikipedia.org/wiki/Event_loop). The dispatcher builds upon the Service Fabric [IReliableQueue](https://msdn.microsoft.com/en-us/library/azure/dn971527.aspx?f=255&MSPPError=-2147217396). | 
 
