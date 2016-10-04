@@ -65,7 +65,7 @@ namespace CounterService
         }
 
         [NonEvent]
-        public void ServiceMessage(StatelessService service, string message, params object[] args)
+        public void ServiceMessage(StatefulService service, string message, params object[] args)
         {
             if (this.IsEnabled())
             {
@@ -73,7 +73,7 @@ namespace CounterService
                 ServiceMessage(
                     service.Context.ServiceName.ToString(),
                     service.Context.ServiceTypeName,
-                    service.Context.InstanceId,
+                    service.Context.ReplicaId,
                     service.Context.PartitionId,
                     service.Context.CodePackageActivationContext.ApplicationName,
                     service.Context.CodePackageActivationContext.ApplicationTypeName,

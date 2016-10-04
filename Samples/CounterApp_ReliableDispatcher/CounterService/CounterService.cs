@@ -1,51 +1,69 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Fabric;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CounterService.Api;
+using MicroServiceFabric.Dispatcher;
+using Microsoft.ServiceFabric.Data;
+using Microsoft.ServiceFabric.Data.Collections;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
+using Microsoft.ServiceFabric.Services.Remoting.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
 
 namespace CounterService
 {
-    /// <summary>
-    /// An instance of this class is created for each service instance by the Service Fabric runtime.
-    /// </summary>
-    internal sealed class CounterService : StatelessService
+    internal sealed class CounterService : StatefulService, IIncrementCounter, IQueryCounter
     {
-        public CounterService(StatelessServiceContext context)
-            : base(context)
-        { }
+        private readonly IReliableDispatcher<int> _reliableDispatcher;
 
-        /// <summary>
-        /// Optional override to create listeners (e.g., TCP, HTTP) for this service replica to handle client or user requests.
-        /// </summary>
-        /// <returns>A collection of listeners.</returns>
-        protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners()
+        public CounterService(StatefulServiceContext context)
+            : base(context)
         {
-            return new ServiceInstanceListener[0];
+            _reliableDispatcher = new ReliableDispatcher<int>(
+                new Lazy<IReliableQueue<int>>(
+                    () => StateManager.GetOrAddAsync<IReliableQueue<int>>("CounterIncrements").Result),
+                new TransactionFactory(StateManager));
         }
 
-        /// <summary>
-        /// This is the main entry point for your service instance.
-        /// </summary>
-        /// <param name="cancellationToken">Canceled when Service Fabric needs to shut down this service instance.</param>
-        protected override async Task RunAsync(CancellationToken cancellationToken)
+        Task IIncrementCounter.IncrementCounterAsync(int incrementBy)
         {
-            // TODO: Replace the following sample code with your own logic 
-            //       or remove this RunAsync override if it's not needed in your service.
+            return _reliableDispatcher.EnqueueAsync(incrementBy);
+        }
 
-            long iterations = 0;
+        async Task<int> IQueryCounter.GetCounterAsync()
+        {
+            var counters = await StateManager.GetOrAddAsync<IReliableDictionary<string, int>>("Counters").ConfigureAwait(false);
+            int counter;
 
-            while (true)
+            using (var transaction = StateManager.CreateTransaction())
             {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                ServiceEventSource.Current.ServiceMessage(this, "Working-{0}", ++iterations);
-
-                await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+                var counterValue = await counters.TryGetValueAsync(transaction, "Counter").ConfigureAwait(false);
+                counter = counterValue.HasValue
+                    ? counterValue.Value
+                    : 0;
+                await transaction.CommitAsync().ConfigureAwait(false);
             }
+
+            return counter;
+        }
+
+        protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
+        {
+            return new[] {new ServiceReplicaListener(this.CreateServiceRemotingListener)};
+        }
+
+        protected override Task RunAsync(CancellationToken cancellationToken)
+        {
+            return _reliableDispatcher.RunAsync(IncrementCounterAsync, cancellationToken);
+        }
+
+        private async Task IncrementCounterAsync(ITransaction transaction, int incrementCounterBy, CancellationToken cancellationtoken)
+        {
+            var counters =
+                await StateManager.GetOrAddAsync<IReliableDictionary<string, int>>("Counters").ConfigureAwait(false);
+            await counters.AddOrUpdateAsync(transaction, "Counter", 0, (key, value) => value + incrementCounterBy).ConfigureAwait(false);
+            // Note: no need to commit the transaction as this will happen automatically in the ReliableDispatcher.
         }
     }
 }

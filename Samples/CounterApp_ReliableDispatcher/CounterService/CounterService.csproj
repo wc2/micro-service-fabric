@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
-    <ProjectGuid>{84C9C12D-AF7B-4285-9BCF-1B1F71592827}</ProjectGuid>
+    <ProjectGuid>{BFF063BE-1A4F-4292-902A-8AFDB84C938C}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CounterService</RootNamespace>
@@ -36,6 +36,14 @@
     <AdditionalFileItemNames>$(AdditionalFileItemNames);None</AdditionalFileItemNames>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MicroServiceFabric.CodeContracts, Version=1.0.0.2, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\MicroServiceFabric.Dispatcher.1.0.0.2\lib\net452\MicroServiceFabric.CodeContracts.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MicroServiceFabric.Dispatcher, Version=1.0.0.2, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\MicroServiceFabric.Dispatcher.1.0.0.2\lib\net452\MicroServiceFabric.Dispatcher.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.ServiceFabric.Data, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=AMD64">
       <HintPath>..\packages\Microsoft.ServiceFabric.Data.2.2.207\lib\net45\Microsoft.ServiceFabric.Data.dll</HintPath>
       <Private>True</Private>
@@ -83,6 +91,12 @@
     <None Include="PackageRoot\ServiceManifest.xml" />
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CounterService.Api\CounterService.Api.csproj">
+      <Project>{ba0e6aad-90bc-47be-8bd3-d84f71ebee3d}</Project>
+      <Name>CounterService.Api</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
