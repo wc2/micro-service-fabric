@@ -13,7 +13,8 @@ namespace MicroServiceFabric.Dispatcher
         protected readonly IReliableDispatcher<T> ReliableDispatcher;
 
         protected StatefulDispatcherService(StatefulServiceContext serviceContext,
-            IReliableDispatcher<T> reliableDispatcher) : base(serviceContext)
+            IReliableStateManagerReplica reliableStateManagerReplica, IReliableDispatcher<T> reliableDispatcher)
+            : base(serviceContext, reliableStateManagerReplica)
         {
             Contract.RequiresNotNull(reliableDispatcher, nameof(reliableDispatcher));
 

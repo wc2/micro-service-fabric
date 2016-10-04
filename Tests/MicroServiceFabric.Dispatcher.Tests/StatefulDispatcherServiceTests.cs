@@ -18,6 +18,7 @@ namespace MicroServiceFabric.Dispatcher.Tests
                 () =>
                     new TestStatefulDispatcherService<object>(
                         CreateStatefulServiceContext(),
+                        Substitute.For<IReliableStateManagerReplica>(),
                         null));
         }
 
@@ -49,17 +50,19 @@ namespace MicroServiceFabric.Dispatcher.Tests
                 .ConfigureAwait(false);
         }
 
-        private static TestStatefulDispatcherService<T> CreateStatefulDispatcherService<T>(IReliableDispatcher<T> reliableDispatcher)
+        private static TestStatefulDispatcherService<T> CreateStatefulDispatcherService<T>(
+            IReliableDispatcher<T> reliableDispatcher)
         {
             return new TestStatefulDispatcherService<T>(
                 CreateStatefulServiceContext(),
+                Substitute.For<IReliableStateManagerReplica>(),
                 reliableDispatcher);
         }
 
         private static StatefulServiceContext CreateStatefulServiceContext()
         {
             return new StatefulServiceContext(
-                new NodeContext("", new NodeId(0, 1), 0, "Type","localhost"),
+                new NodeContext("", new NodeId(0, 1), 0, "Type", "localhost"),
                 Substitute.For<ICodePackageActivationContext>(),
                 "ServiceTypeName",
                 new Uri("fabric:/App/ServiceTypeName", UriKind.Absolute),
@@ -70,11 +73,14 @@ namespace MicroServiceFabric.Dispatcher.Tests
 
         private sealed class TestStatefulDispatcherService<T> : StatefulDispatcherService<T>
         {
-            public TestStatefulDispatcherService(StatefulServiceContext serviceContext, IReliableDispatcher<T> reliableDispatcher) : base(serviceContext, reliableDispatcher)
+            public TestStatefulDispatcherService(StatefulServiceContext serviceContext,
+                IReliableStateManagerReplica reliableStateManagerReplica, IReliableDispatcher<T> reliableDispatcher)
+                : base(serviceContext, reliableStateManagerReplica, reliableDispatcher)
             {
             }
 
-            public override Task OnItemDispatchedAsync(ITransaction transaction, T item, CancellationToken cancellationToken)
+            public override Task OnItemDispatchedAsync(ITransaction transaction, T item,
+                CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }
