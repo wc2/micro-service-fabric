@@ -32,10 +32,10 @@ namespace MicroServiceFabric.Dispatcher
 
         internal Task RunDispatcherAsync(CancellationToken cancellationToken)
         {
-            return ReliableDispatcher.RunAsync(OnItemDispatched, cancellationToken);
+            return ReliableDispatcher.RunAsync(OnItemDispatchedAsync, cancellationToken);
         }
 
-        public abstract Task OnItemDispatched(ITransaction transaction, T item,
+        public abstract Task OnItemDispatchedAsync(ITransaction transaction, T item,
             CancellationToken cancellationToken);
     }
 }

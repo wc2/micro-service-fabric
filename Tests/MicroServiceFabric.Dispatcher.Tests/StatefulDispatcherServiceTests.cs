@@ -35,7 +35,7 @@ namespace MicroServiceFabric.Dispatcher.Tests
         }
 
         [Fact]
-        public async Task RunDispatcherAsync_InvokesReliableDispatcherRunAsyncWithOnItemDispatched()
+        public async Task RunDispatcherAsync_InvokesReliableDispatcherRunAsyncWithOnItemDispatchedAsync()
         {
             var tokenSource = new CancellationTokenSource();
             var reliableDispatcher = Substitute.For<IReliableDispatcher<object>>();
@@ -45,11 +45,9 @@ namespace MicroServiceFabric.Dispatcher.Tests
 
             await reliableDispatcher
                 .Received()
-                .RunAsync(service.OnItemDispatched, tokenSource.Token)
+                .RunAsync(service.OnItemDispatchedAsync, tokenSource.Token)
                 .ConfigureAwait(false);
         }
-
-        public void RuNDispatcherAsync_PassesCancellationTokenToReliableDispatcher() { }
 
         private static TestStatefulDispatcherService<T> CreateStatefulDispatcherService<T>(IReliableDispatcher<T> reliableDispatcher)
         {
@@ -76,7 +74,7 @@ namespace MicroServiceFabric.Dispatcher.Tests
             {
             }
 
-            public override Task OnItemDispatched(ITransaction transaction, T item, CancellationToken cancellationToken)
+            public override Task OnItemDispatchedAsync(ITransaction transaction, T item, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }
