@@ -10,9 +10,9 @@ namespace MicroServiceFabric.Bootstrap.StatelessServices
 {
     public static class Bootstrap<TStatelessServiceModule> where TStatelessServiceModule : Module, new()
     {
-        public static void Start<TService>() where TService : StatelessService
+        public static void Start<TService>(string serviceTypeName = null) where TService : StatelessService
         {
-            ServiceRuntime.RegisterServiceAsync(GetServiceTypeName<TService>(), CreateService<TService>)
+            ServiceRuntime.RegisterServiceAsync(serviceTypeName ?? Naming.GetServiceTypeName<TService>(), CreateService<TService>)
                 .GetAwaiter()
                 .GetResult();
 
@@ -22,14 +22,14 @@ namespace MicroServiceFabric.Bootstrap.StatelessServices
         private static TService CreateService<TService>(StatelessServiceContext context) where TService : StatelessService
         {
             TService service;
-            IStatelessServiceEventSource eventSource = null;
+            IServiceEventSource eventSource = null;
 
             try
             {
                 var container = ConfigureContainer(context);
 
-                eventSource = container.GetInstance<IStatelessServiceEventSource>();
-                eventSource.ServiceTypeRegistered(Process.GetCurrentProcess().Id, GetServiceName<TService>());
+                eventSource = container.GetInstance<IServiceEventSource>();
+                eventSource.ServiceTypeRegistered(Process.GetCurrentProcess().Id, Naming.GetServiceName<TService>());
                 service = container.GetInstance<TService>();
             }
             catch (Exception e)
@@ -41,21 +41,11 @@ namespace MicroServiceFabric.Bootstrap.StatelessServices
             return service;
         }
 
-        private static string GetServiceName<TService>()
-        {
-            return typeof (TService).Name;
-        }
-
-        private static string GetServiceTypeName<TService>()
-        {
-            return $"{GetServiceName<TService>()}Type";
-        }
-
         private static Container ConfigureContainer(StatelessServiceContext context)
         {
             var container = new Container();
 
-            container.Register(() => context);
+            container.Register(() => context, Lifestyle.Singleton);
             container.RegisterModule<TStatelessServiceModule>();
             container.Verify();
 
