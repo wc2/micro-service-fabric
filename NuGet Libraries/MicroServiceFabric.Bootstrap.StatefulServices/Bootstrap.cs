@@ -29,9 +29,9 @@ namespace MicroServiceFabric.Bootstrap.StatefulServices
             {
                 var container = ConfigureContainer(context);
 
-                service = container.GetInstance<TService>();
                 eventSource = container.GetInstance<IStatefulServiceEventSource>();
                 eventSource.ServiceTypeRegistered(Process.GetCurrentProcess().Id, GetServiceName<TService>());
+                service = container.GetInstance<TService>();
             }
             catch (Exception e)
             {
