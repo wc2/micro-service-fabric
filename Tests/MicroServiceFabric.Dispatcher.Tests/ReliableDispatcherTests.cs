@@ -34,17 +34,6 @@ namespace MicroServiceFabric.Dispatcher.Tests
         }
 
         [Fact]
-        public async Task EnqueueAsync_ItemRequired()
-        {
-            var reliableDispatcher = CreateReliableDispatcher();
-
-            await Assert.ThrowsAsync<ArgumentNullException>(
-                "item",
-                () => reliableDispatcher.EnqueueAsync(null))
-                .ConfigureAwait(false);
-        }
-
-        [Fact]
         public async Task EnqueueAsync_EnqueuesItemOnReliableQueue()
         {
             var reliableQueue = Substitute.For<IReliableQueue<object>>();

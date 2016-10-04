@@ -30,8 +30,6 @@ namespace MicroServiceFabric.Dispatcher
 
         async Task IReliableDispatcher<T>.EnqueueAsync(T item)
         {
-            Contract.RequiresNotNull(item, nameof(item));
-
             using (var transaction = _transactionFactory.Create())
             {
                 await _reliableQueue.Value.EnqueueAsync(transaction, item).ConfigureAwait(false);
