@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Diagnostics.Tracing;
+using System.Fabric;
 using System.Threading.Tasks;
+using MicroServiceFabric.Bootstrap;
 using Microsoft.ServiceFabric.Services.Runtime;
-using MicroServiceFabric.Bootstrap.StatelessServices;
 
 namespace $rootnamespace$
 {
     // TODO: Enter the name of your service here
     [EventSource(Name = "ENTER-YOUR-APP-NAME-HERE")]
-    internal sealed class ServiceEventSource : EventSource, IStatelessServiceEventSource
+    internal sealed class ServiceEventSource : EventSource, IServiceEventSource
     {
         static ServiceEventSource()
         {
@@ -54,6 +55,43 @@ namespace $rootnamespace$
             if (this.IsEnabled())
             {
                 WriteEvent(MessageEventId, message);
+            }
+        }
+
+        [NonEvent]
+        public void ServiceMessage(ServiceContext serviceContext, string message, params object[] args)
+        {
+            if (this.IsEnabled())
+            {
+
+                string finalMessage = string.Format(message, args);
+                ServiceMessage(
+                    serviceContext.ServiceName.ToString(),
+                    serviceContext.ServiceTypeName,
+                    serviceContext.ReplicaOrInstanceId,
+                    serviceContext.PartitionId,
+                    serviceContext.CodePackageActivationContext.ApplicationName,
+                    serviceContext.CodePackageActivationContext.ApplicationTypeName,
+                    serviceContext.NodeContext.NodeName,
+                    finalMessage);
+            }
+        }
+
+        [NonEvent]
+        public void ServiceMessage(StatefulService service, string message, params object[] args)
+        {
+            if (this.IsEnabled())
+            {
+                var finalMessage = string.Format(message, args);
+                ServiceMessage(
+                    service.Context.ServiceName.ToString(),
+                    service.Context.ServiceTypeName,
+                    service.Context.ReplicaId,
+                    service.Context.PartitionId,
+                    service.Context.CodePackageActivationContext.ApplicationName,
+                    service.Context.CodePackageActivationContext.ApplicationTypeName,
+                    service.Context.NodeContext.NodeName,
+                    finalMessage);
             }
         }
 
