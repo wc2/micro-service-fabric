@@ -76,6 +76,8 @@
     <Compile Include="..\..\Common\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="GetSettings.cs" />
+    <Compile Include="IGetSettings.cs" />
     <Compile Include="IServiceEventSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Naming.cs" />

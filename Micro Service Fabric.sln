@@ -38,7 +38,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceFabric.Bootstra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceFabric.Bootstrap.StatelessServices.Owin", "NuGet Libraries\MicroServiceFabric.Bootstrap.StatelessServices.Owin\MicroServiceFabric.Bootstrap.StatelessServices.Owin.csproj", "{D2F0E77F-1575-4096-8916-8B3A0011D8CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceFabric.Bootstrap", "Libraries\MicroServiceFabric.Bootstrap\MicroServiceFabric.Bootstrap.csproj", "{14C03A36-B37F-42DE-82CF-E7692E9D4D41}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceFabric.Bootstrap", "NuGet Libraries\MicroServiceFabric.Bootstrap\MicroServiceFabric.Bootstrap.csproj", "{14C03A36-B37F-42DE-82CF-E7692E9D4D41}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceFabric.Bootstrap.Actors", "NuGet Libraries\MicroServiceFabric.Bootstrap.Actors\MicroServiceFabric.Bootstrap.Actors.csproj", "{41A36446-4E4C-4E9B-AF07-90D58CFED004}"
 EndProject
@@ -119,7 +119,7 @@ Global
 		{A01C2627-90C3-4036-AAED-6B6ED7B8B8E3} = {5103B92D-51FC-4675-93FF-7AC42AEACBF1}
 		{225D9713-57EB-4F97-8030-DFC35E9CC491} = {5103B92D-51FC-4675-93FF-7AC42AEACBF1}
 		{D2F0E77F-1575-4096-8916-8B3A0011D8CE} = {5103B92D-51FC-4675-93FF-7AC42AEACBF1}
-		{14C03A36-B37F-42DE-82CF-E7692E9D4D41} = {B193BEA6-770F-4506-81EC-DE47975A4F7B}
+		{14C03A36-B37F-42DE-82CF-E7692E9D4D41} = {5103B92D-51FC-4675-93FF-7AC42AEACBF1}
 		{41A36446-4E4C-4E9B-AF07-90D58CFED004} = {5103B92D-51FC-4675-93FF-7AC42AEACBF1}
 	EndGlobalSection
 EndGlobal

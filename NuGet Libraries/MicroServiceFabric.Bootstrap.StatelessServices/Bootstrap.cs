@@ -8,7 +8,7 @@ using SimpleInjector.Modules;
 
 namespace MicroServiceFabric.Bootstrap.StatelessServices
 {
-    public static class Bootstrap<TStatelessServiceModule> where TStatelessServiceModule : Module, new()
+    public static class Bootstrap<TStatelessServiceModule> where TStatelessServiceModule : IModule, new()
     {
         public static void Start<TService>(string serviceTypeName = null) where TService : StatelessService
         {
@@ -46,6 +46,9 @@ namespace MicroServiceFabric.Bootstrap.StatelessServices
             var container = new Container();
 
             container.Register(() => context, Lifestyle.Singleton);
+            container.Register(() => (ServiceContext)context, Lifestyle.Singleton);
+            container.Register<IGetStatelessContext, GetStatelessContext>();
+            container.Register<IGetSettings, GetSettings>();
             container.RegisterModule<TStatelessServiceModule>();
             container.Verify();
 

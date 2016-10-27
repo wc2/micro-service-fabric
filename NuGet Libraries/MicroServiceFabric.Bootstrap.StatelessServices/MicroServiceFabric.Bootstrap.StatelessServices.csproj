@@ -88,13 +88,15 @@
     <None Include="content\Program.cs.pp" />
     <None Include="content\ServiceEventSource.cs.pp" />
     <None Include="content\StatelessServiceModule.cs.pp" />
+    <Compile Include="GetStatelessContext.cs" />
+    <Compile Include="IGetStatelessContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Libraries\MicroServiceFabric.Bootstrap\MicroServiceFabric.Bootstrap.csproj">
+    <ProjectReference Include="..\MicroServiceFabric.Bootstrap\MicroServiceFabric.Bootstrap.csproj">
       <Project>{14c03a36-b37f-42de-82cf-e7692e9d4d41}</Project>
       <Name>MicroServiceFabric.Bootstrap</Name>
     </ProjectReference>

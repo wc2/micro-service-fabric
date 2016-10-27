@@ -9,7 +9,7 @@ using SimpleInjector.Modules;
 
 namespace MicroServiceFabric.Bootstrap.StatefulServices
 {
-    public static class Bootstrap<TStatefulServiceModule> where TStatefulServiceModule : Module, new()
+    public static class Bootstrap<TStatefulServiceModule> where TStatefulServiceModule : IModule, new()
     {
         public static void Start<TService>() where TService : StatefulService
         {
@@ -47,8 +47,11 @@ namespace MicroServiceFabric.Bootstrap.StatefulServices
             var container = new Container();
             IReliableStateManagerReplica stateManager = new ReliableStateManager(context);
 
-            container.Register(() => context, Lifestyle.Singleton);
             container.Register(() => stateManager, Lifestyle.Singleton);
+            container.Register(() => context, Lifestyle.Singleton);
+            container.Register(() => (ServiceContext)context, Lifestyle.Singleton);
+            container.Register<IGetStatefulContext, GetStatefulContext>();
+            container.Register<IGetSettings, GetSettings>();
             container.RegisterModule<TStatefulServiceModule>();
             container.Verify();
 
