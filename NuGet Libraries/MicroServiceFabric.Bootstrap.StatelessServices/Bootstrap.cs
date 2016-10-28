@@ -45,12 +45,11 @@ namespace MicroServiceFabric.Bootstrap.StatelessServices
         {
             var container = new Container();
 
-            container.Register(() => context, Lifestyle.Singleton);
-            container.Register(() => (ServiceContext)context, Lifestyle.Singleton);
+            container.RegisterModule<TStatelessServiceModule>();
             container.Register<IGetStatelessContext, GetStatelessContext>();
             container.Register<IGetSettings, GetSettings>();
-            container.RegisterModule<TStatelessServiceModule>();
-            container.Verify();
+            container.Register(() => context, Lifestyle.Singleton);
+            container.Register(() => (ServiceContext)context, Lifestyle.Singleton);
 
             return container;
         }

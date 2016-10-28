@@ -45,15 +45,13 @@ namespace MicroServiceFabric.Bootstrap.StatefulServices
         private static Container ConfigureContainer(StatefulServiceContext context)
         {
             var container = new Container();
-            IReliableStateManagerReplica stateManager = new ReliableStateManager(context);
 
-            container.Register(() => stateManager, Lifestyle.Singleton);
-            container.Register(() => context, Lifestyle.Singleton);
-            container.Register(() => (ServiceContext)context, Lifestyle.Singleton);
+            container.RegisterModule<TStatefulServiceModule>();
+            container.Register<IReliableStateManagerReplica>(() => new ReliableStateManager(context), Lifestyle.Singleton);
             container.Register<IGetStatefulContext, GetStatefulContext>();
             container.Register<IGetSettings, GetSettings>();
-            container.RegisterModule<TStatefulServiceModule>();
-            container.Verify();
+            container.Register(() => context, Lifestyle.Singleton);
+            container.Register(() => (ServiceContext)context, Lifestyle.Singleton);
 
             return container;
         }
