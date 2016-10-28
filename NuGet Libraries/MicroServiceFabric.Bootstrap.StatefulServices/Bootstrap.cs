@@ -48,8 +48,8 @@ namespace MicroServiceFabric.Bootstrap.StatefulServices
 
             container.RegisterModule<TStatefulServiceModule>();
             container.Register<IReliableStateManagerReplica>(() => new ReliableStateManager(context), Lifestyle.Singleton);
-            container.Register<IGetStatefulContext, GetStatefulContext>();
-            container.Register<IGetSettings, GetSettings>();
+            container.Register<IGetStatefulContext, GetStatefulContext>(Lifestyle.Singleton);
+            container.Register<IGetSettings, GetSettings>(Lifestyle.Singleton);
             container.Register(() => context, Lifestyle.Singleton);
             container.Register(() => (ServiceContext)context, Lifestyle.Singleton);
 
