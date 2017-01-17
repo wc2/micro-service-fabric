@@ -29,10 +29,10 @@ namespace MicroServiceFabric.Bootstrap.StatelessServices.Owin
 
         public OwinCommunicationListener(Action<IAppBuilder> startup, ServiceContext serviceContext, IServiceEventSource eventSource, string endpointName, string appRoot)
         {
-            Contract.RequiresNotNull(startup, nameof(startup));
-            Contract.RequiresNotNull(serviceContext, nameof(serviceContext));
-            Contract.RequiresNotNull(endpointName, nameof(endpointName));
-            Contract.RequiresNotNull(eventSource, nameof(eventSource));
+            Requires.IsNotNull(startup, nameof(startup));
+            Requires.IsNotNull(serviceContext, nameof(serviceContext));
+            Requires.IsNotNull(endpointName, nameof(endpointName));
+            Requires.IsNotNull(eventSource, nameof(eventSource));
 
             _startup = startup;
             _serviceContext = serviceContext;

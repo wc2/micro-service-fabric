@@ -6,7 +6,7 @@ namespace $rootnamespace$
     {
         private static void Main()
         {
-            Bootstrap<StatelessServiceModule>.Start<YOUR_SERVICE_HERE>();
+            Bootstrap<ServiceFabricHostModule>.Start<YOUR_SERVICE_HERE>();
         }
     }
 }

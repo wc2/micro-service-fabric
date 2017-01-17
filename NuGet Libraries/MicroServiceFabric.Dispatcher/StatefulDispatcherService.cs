@@ -16,7 +16,7 @@ namespace MicroServiceFabric.Dispatcher
             IReliableStateManagerReplica reliableStateManagerReplica, IReliableDispatcher<T> reliableDispatcher)
             : base(serviceContext, reliableStateManagerReplica)
         {
-            Contract.RequiresNotNull(reliableDispatcher, nameof(reliableDispatcher));
+            Requires.IsNotNull(reliableDispatcher, nameof(reliableDispatcher));
 
             ReliableDispatcher = reliableDispatcher;
         }

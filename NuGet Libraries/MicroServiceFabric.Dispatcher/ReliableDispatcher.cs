@@ -16,8 +16,8 @@ namespace MicroServiceFabric.Dispatcher
 
         public ReliableDispatcher(Lazy<IReliableQueue<T>> reliableQueue, ITransactionFactory transactionFactory)
         {
-            Contract.RequiresNotNull(reliableQueue, nameof(reliableQueue));
-            Contract.RequiresNotNull(transactionFactory, nameof(transactionFactory));
+            Requires.IsNotNull(reliableQueue, nameof(reliableQueue));
+            Requires.IsNotNull(transactionFactory, nameof(transactionFactory));
 
             _reliableQueue = reliableQueue;
             _transactionFactory = transactionFactory;
@@ -41,7 +41,7 @@ namespace MicroServiceFabric.Dispatcher
 
         Task IReliableDispatcher<T>.RunAsync(DispatcherTask<T> dispatcherTask, CancellationToken cancellationToken)
         {
-            Contract.RequiresNotNull(dispatcherTask, nameof(dispatcherTask));
+            Requires.IsNotNull(dispatcherTask, nameof(dispatcherTask));
             cancellationToken.Register(StopDispatcher, false);
 
             return StartDispatcherAsync(dispatcherTask);

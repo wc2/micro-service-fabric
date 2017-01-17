@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>$description$</description>
     <summary>Simple event dispatcher (ReliableDispatcher) and an abstract service implementation of an event dispatcher (StatefulDispatcherService). The dispatcher builds upon the Service Fabric IReliableQueue.</summary>
-    <copyright>Copyright 2016 William Cowell Consulting Limited. All rights reserved.</copyright>
+    <copyright>Copyright 2017 William Cowell Consulting Limited. All rights reserved.</copyright>
     <tags>Service Fabric Reliable Queue Dispatcher Event Loop Stateful Service</tags>
   </metadata>
 </package>

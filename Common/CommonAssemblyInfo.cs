@@ -2,7 +2,7 @@ using System.Reflection;
 
 [assembly: AssemblyCompany("William Cowell Consulting Limited")]
 [assembly: AssemblyProduct("Micro Service Fabric")]
-[assembly: AssemblyCopyright("Copyright © 2016 William Cowell Consulting Limited. All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright © 2017 William Cowell Consulting Limited. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 
 // Version information for an assembly consists of the following four values:
@@ -15,5 +15,5 @@ using System.Reflection;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.13")]
-[assembly: AssemblyFileVersion("1.0.0.13")]
+[assembly: AssemblyVersion("1.0.0.14")]
+[assembly: AssemblyFileVersion("1.0.0.14")]

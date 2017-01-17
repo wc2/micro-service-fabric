@@ -9,11 +9,11 @@ using SimpleInjector.Modules;
 
 namespace MicroServiceFabric.Bootstrap.StatefulServices
 {
-    public static class Bootstrap<TStatefulServiceModule> where TStatefulServiceModule : IModule, new()
+    public static class Bootstrap<TServiceFabricHostModule> where TServiceFabricHostModule : IModule, new()
     {
-        public static void Start<TService>() where TService : StatefulService
+        public static void Start<TService>(string serviceTypeName = null) where TService : StatefulService
         {
-            ServiceRuntime.RegisterServiceAsync(Naming.GetServiceTypeName<TService>(), CreateService<TService>)
+            ServiceRuntime.RegisterServiceAsync(serviceTypeName ?? Naming.GetServiceTypeName<TService>(), CreateService<TService>)
                 .GetAwaiter()
                 .GetResult();
 
@@ -46,9 +46,8 @@ namespace MicroServiceFabric.Bootstrap.StatefulServices
         {
             var container = new Container();
 
-            container.RegisterModule<TStatefulServiceModule>();
+            container.RegisterModule<TServiceFabricHostModule>();
             container.Register<IReliableStateManagerReplica>(() => new ReliableStateManager(context), Lifestyle.Singleton);
-            container.Register<IGetStatefulContext, GetStatefulContext>(Lifestyle.Singleton);
             container.Register<IGetSettings, GetSettings>(Lifestyle.Singleton);
             container.Register(() => context, Lifestyle.Singleton);
             container.Register(() => (ServiceContext)context, Lifestyle.Singleton);

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace MicroServiceFabric.CodeContracts
 {
-    public static class Contract
+    public static class Requires
     {
-        public static void RequiresNotNull<T>(T value, string paramName)
+        public static void IsNotNull<T>(T value, string paramName)
         {
             if (EqualityComparer<T>.Default.Equals(value, default(T)))
             {

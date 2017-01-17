@@ -1,4 +1,4 @@
-﻿using MicroServiceFabric.Bootstrap.StatefulServices;
+﻿using MicroServiceFabric.Bootstrap.Actors;
 
 namespace $rootnamespace$
 {
@@ -6,7 +6,7 @@ namespace $rootnamespace$
     {
         private static void Main()
         {
-            Bootstrap<ServiceFabricHostModule>.Start<YOUR_SERVICE_HERE>();
+            Bootstrap<ServiceFabricHostModule>.Start<YOUR_ACTOR_HERE>();
         }
     }
 }
