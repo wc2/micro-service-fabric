@@ -4,9 +4,9 @@ using SimpleInjector.Modules;
 
 namespace $rootnamespace$
 {
-    internal sealed class StatefulServiceModule : Module
+    internal sealed class ServiceFabricHostModule : IModule
     {
-        public override void Load(Container container)
+        void IModule.Load(Container container)
         {
             container.Register<IServiceEventSource, ServiceEventSource>(Lifestyle.Singleton);
 

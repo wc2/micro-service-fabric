@@ -16,8 +16,8 @@ namespace MicroServiceFabric.Bootstrap.StatelessServices.Owin
         public Owin(StatelessServiceContext serviceContext, IServiceEventSource serviceEventSource,
             Action<IAppBuilder> appBuilder) : base(serviceContext)
         {
-            Contract.RequiresNotNull(serviceEventSource, nameof(serviceEventSource));
-            Contract.RequiresNotNull(appBuilder, nameof(appBuilder));
+            Requires.IsNotNull(serviceEventSource, nameof(serviceEventSource));
+            Requires.IsNotNull(appBuilder, nameof(appBuilder));
 
             _serviceEventSource = serviceEventSource;
             _appBuilder = appBuilder;

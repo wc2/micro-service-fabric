@@ -17,7 +17,7 @@ See the [Wiki](https://github.com/wc2/micro-service-fabric/wiki) for information
 
 | Component | Description |
 | --------- | ----------- |
-| MicroServiceFabric.Bootstrap.Actors | Package for bootstrapping Service Fabric [Actors](https://azure.microsoft.com/en-us/documentation/articles/service-fabric-reliable-actors-introduction/). |
+| [MicroServiceFabric.Bootstrap.Actors](https://www.nuget.org/packages/MicroServiceFabric.Bootstrap.Actors/) | Package for bootstrapping Service Fabric [Actors](https://azure.microsoft.com/en-us/documentation/articles/service-fabric-reliable-actors-introduction/). |
 | [MicroServiceFabric.Bootstrap.StatefulService](https://www.nuget.org/packages/MicroServiceFabric.Bootstrap.StatefulServices/) | Package for bootstrapping Service Fabric [Stateful Services](https://azure.microsoft.com/en-us/documentation/articles/service-fabric-reliable-services-introduction/). |
 | [MicroServiceFabric.Bootstrap.StatelessService](https://www.nuget.org/packages/MicroServiceFabric.Bootstrap.StatelessServices/) | Package for bootstrapping Service Fabric [Stateless Services](https://azure.microsoft.com/en-us/documentation/articles/service-fabric-reliable-services-introduction/). |
 | [MicroServiceFabric.Bootstrap.StatelessService.Owin](https://www.nuget.org/packages/MicroServiceFabric.Bootstrap.StatelessServices.Owin/) | Package for bootstrapping Service Fabric [Stateless Services](https://azure.microsoft.com/en-us/documentation/articles/service-fabric-reliable-services-introduction/) that expose OWIN-hosted applications, such as Web APIs. |
@@ -29,4 +29,4 @@ See the [Wiki](https://github.com/wc2/micro-service-fabric/wiki) for information
 
 ## Copyright
 
-Copyright 2016 William Cowell Consulting Limited.
+Copyright 2017 William Cowell Consulting Limited.

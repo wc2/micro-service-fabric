@@ -9,7 +9,7 @@ namespace MicroServiceFabric.Dispatcher
 
         public TransactionFactory(IReliableStateManager reliableStateManager)
         {
-            Contract.RequiresNotNull(reliableStateManager, nameof(reliableStateManager));
+            Requires.IsNotNull(reliableStateManager, nameof(reliableStateManager));
 
             _reliableStateManager = reliableStateManager;
         }

@@ -10,9 +10,9 @@
     <projectUrl>https://github.com/wc2/micro-service-fabric</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>$description$</description>
-    <summary>Package for bootstrapping Service Fabric Stateless Services</summary>
+    <summary>Package for bootstrapping Service Fabric Reliable Actors</summary>
     <copyright>Copyright 2017 William Cowell Consulting Limited. All rights reserved.</copyright>
-    <tags>Service Fabric Bootstrap IoC DI depedency injection Stateless Service SimpleInjector Modules container</tags>
+    <tags>Service Fabric Bootstrap IoC DI depedency injection Reliable Actor Stateful SimpleInjector Modules container</tags>
   </metadata>
   <files>
     <file src="content\*" target="content" />

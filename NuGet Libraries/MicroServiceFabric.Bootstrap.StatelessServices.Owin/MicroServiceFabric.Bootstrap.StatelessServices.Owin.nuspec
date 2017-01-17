@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>$description$</description>
     <summary>Package for bootstrapping Service Fabric Stateless Services that expose OWIN-hosted applications, such as Web APIs.</summary>
-    <copyright>Copyright 2016 William Cowell Consulting Limited. All rights reserved.</copyright>
+    <copyright>Copyright 2017 William Cowell Consulting Limited. All rights reserved.</copyright>
     <tags>Service Fabric Bootstrap IoC DI depedency injection Stateless Service Owin OwinCommunicationListener SimpleInjector Modules container</tags>
   </metadata>
   <files>
