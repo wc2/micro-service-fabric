@@ -47,12 +47,12 @@ namespace MicroServiceFabric.Bootstrap.StatefulServices
             var container = new Container();
             var stateManager = new Lazy<ReliableStateManager>(() => new ReliableStateManager(context));
 
+            container.RegisterModule<TServiceFabricHostModule>();
             container.Register<IReliableStateManagerReplica>(() => stateManager.Value, Lifestyle.Singleton);
             container.Register<IReliableStateManager>(() => stateManager.Value, Lifestyle.Singleton);
             container.Register<IGetSettings, GetSettings>(Lifestyle.Singleton);
             container.Register(() => context, Lifestyle.Singleton);
             container.Register(() => (ServiceContext)context, Lifestyle.Singleton);
-            container.RegisterModule<TServiceFabricHostModule>();
 
             return container;
         }
