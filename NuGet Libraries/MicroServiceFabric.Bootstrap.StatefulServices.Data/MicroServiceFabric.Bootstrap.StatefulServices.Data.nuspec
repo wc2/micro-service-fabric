@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://raw.githubusercontent.com/wc2/micro-service-fabric/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/wc2/micro-service-fabric</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>$description$</description>
+    <summary>Package to facilitate bootstrapping Reliable Services that require Reliable Collections upon construction.</summary>
+    <copyright>Copyright 2017 William Cowell Consulting Limited. All rights reserved.</copyright>
+    <tags>Service Fabric Bootstrap IoC DI depedency injection Reliable Stateful Service SimpleInjector Modules container IReliableDictionary ReliableDictionary IReliableQueue ReliableQueue IReliableConcurrentQueue ReliableConcurrentQueue</tags>
+  </metadata>
+</package>

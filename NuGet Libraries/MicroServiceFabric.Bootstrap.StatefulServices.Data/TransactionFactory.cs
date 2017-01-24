@@ -1,7 +1,7 @@
 ﻿using MicroServiceFabric.CodeContracts;
 using Microsoft.ServiceFabric.Data;
 
-namespace MicroServiceFabric.Dispatcher
+namespace MicroServiceFabric.Bootstrap.StatefulServices.Data
 {
     public sealed class TransactionFactory : ITransactionFactory
     {
