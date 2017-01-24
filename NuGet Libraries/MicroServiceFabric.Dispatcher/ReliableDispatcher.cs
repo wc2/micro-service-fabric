@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MicroServiceFabric.Bootstrap.StatefulServices.Data;
 using MicroServiceFabric.CodeContracts;
 using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Data.Collections;

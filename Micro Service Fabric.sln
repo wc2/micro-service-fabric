@@ -42,6 +42,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceFabric.Bootstra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceFabric.Bootstrap.Actors", "NuGet Libraries\MicroServiceFabric.Bootstrap.Actors\MicroServiceFabric.Bootstrap.Actors.csproj", "{41A36446-4E4C-4E9B-AF07-90D58CFED004}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceFabric.Bootstrap.StatefulServices.Data.Tests", "Tests\MicroServiceFabric.Bootstrap.StatefulServices.Data.Tests\MicroServiceFabric.Bootstrap.StatefulServices.Data.Tests.csproj", "{A7B7C9A2-C13D-4DFA-9632-EC51822AE7E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServiceFabric.Bootstrap.StatefulServices.Data", "NuGet Libraries\MicroServiceFabric.Bootstrap.StatefulServices.Data\MicroServiceFabric.Bootstrap.StatefulServices.Data.csproj", "{A8031622-50DA-446A-B68B-D8A36EAD5B5C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -80,6 +84,14 @@ Global
 		{41A36446-4E4C-4E9B-AF07-90D58CFED004}.Debug|x64.Build.0 = Debug|x64
 		{41A36446-4E4C-4E9B-AF07-90D58CFED004}.Release|x64.ActiveCfg = Release|x64
 		{41A36446-4E4C-4E9B-AF07-90D58CFED004}.Release|x64.Build.0 = Release|x64
+		{A7B7C9A2-C13D-4DFA-9632-EC51822AE7E9}.Debug|x64.ActiveCfg = Debug|x64
+		{A7B7C9A2-C13D-4DFA-9632-EC51822AE7E9}.Debug|x64.Build.0 = Debug|x64
+		{A7B7C9A2-C13D-4DFA-9632-EC51822AE7E9}.Release|x64.ActiveCfg = Release|x64
+		{A7B7C9A2-C13D-4DFA-9632-EC51822AE7E9}.Release|x64.Build.0 = Release|x64
+		{A8031622-50DA-446A-B68B-D8A36EAD5B5C}.Debug|x64.ActiveCfg = Debug|x64
+		{A8031622-50DA-446A-B68B-D8A36EAD5B5C}.Debug|x64.Build.0 = Debug|x64
+		{A8031622-50DA-446A-B68B-D8A36EAD5B5C}.Release|x64.ActiveCfg = Release|x64
+		{A8031622-50DA-446A-B68B-D8A36EAD5B5C}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,5 +105,7 @@ Global
 		{D2F0E77F-1575-4096-8916-8B3A0011D8CE} = {5103B92D-51FC-4675-93FF-7AC42AEACBF1}
 		{14C03A36-B37F-42DE-82CF-E7692E9D4D41} = {5103B92D-51FC-4675-93FF-7AC42AEACBF1}
 		{41A36446-4E4C-4E9B-AF07-90D58CFED004} = {5103B92D-51FC-4675-93FF-7AC42AEACBF1}
+		{A7B7C9A2-C13D-4DFA-9632-EC51822AE7E9} = {314F5341-BBBC-4160-B8E0-60D001BF1D0D}
+		{A8031622-50DA-446A-B68B-D8A36EAD5B5C} = {5103B92D-51FC-4675-93FF-7AC42AEACBF1}
 	EndGlobalSection
 EndGlobal
