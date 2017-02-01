@@ -55,9 +55,13 @@ namespace MicroServiceFabric.Bootstrap.Actors
         private static Container ConfigureContainer(ActorService service, ActorId id)
         {
             var container = new Container();
+            var context = service.Context;
 
             container.RegisterModule<TServiceFabricHostModule>();
             container.Register<IActorStateManager, LazyActorStateManager>(Lifestyle.Singleton);
+            container.Register<IGetSettings, GetSettings>(Lifestyle.Singleton);
+            container.Register(() => context, Lifestyle.Singleton);
+            container.Register(() => (ServiceContext)context, Lifestyle.Singleton);
             container.Register(() => service.StateProvider);
             container.Register(() => service);
             container.Register(() => id);
