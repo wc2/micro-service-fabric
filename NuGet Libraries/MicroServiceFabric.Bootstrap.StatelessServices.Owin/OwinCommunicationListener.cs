@@ -45,16 +45,20 @@ namespace MicroServiceFabric.Bootstrap.StatelessServices.Owin
 
         public Task<string> OpenAsync(CancellationToken cancellationToken)
         {
-            var serviceEndpoint = _serviceContext.CodePackageActivationContext.GetEndpoint(_endpointName);
-            var port = serviceEndpoint.Port;
-            var statefulServiceContext = _serviceContext as StatefulServiceContext;
+            _eventSource.ServiceMessage(_serviceContext, "Calling OpenAsync on endpoint {0}", _endpointName);
 
+            var serviceEndpoint = _serviceContext.CodePackageActivationContext.GetEndpoint(_endpointName);
+
+            _eventSource.ServiceMessage(_serviceContext, "Found endpoint with protocol '{0}' port '{1}'", serviceEndpoint.Protocol, serviceEndpoint.Port);
+
+            var statefulServiceContext = _serviceContext as StatefulServiceContext;
             if (statefulServiceContext != null)
             {
                 _listeningAddress = string.Format(
                     CultureInfo.InvariantCulture,
-                    "http://+:{0}/{1}{2}/{3}/{4}",
-                    port,
+                    "{0}://+:{1}/{2}{3}/{4}/{5}",
+                    serviceEndpoint.Protocol,
+                    serviceEndpoint.Port,
                     string.IsNullOrWhiteSpace(_appRoot)
                         ? string.Empty
                         : _appRoot.TrimEnd('/') + '/',
@@ -66,8 +70,9 @@ namespace MicroServiceFabric.Bootstrap.StatelessServices.Owin
             {
                 _listeningAddress = string.Format(
                     CultureInfo.InvariantCulture,
-                    "http://+:{0}/{1}",
-                    port,
+                    "{0}://+:{1}/{2}",
+                    serviceEndpoint.Protocol,
+                    serviceEndpoint.Port,
                     string.IsNullOrWhiteSpace(_appRoot)
                         ? string.Empty
                         : _appRoot.TrimEnd('/') + '/');
@@ -89,7 +94,7 @@ namespace MicroServiceFabric.Bootstrap.StatelessServices.Owin
             }
             catch (Exception ex)
             {
-                _eventSource.ServiceMessage(_serviceContext, "Web server failed to open. " + ex.ToString());
+                _eventSource.ServiceMessage(_serviceContext, "Web server for endpoint {0} failed to open. ", _endpointName, ex.ToString());
 
                 StopWebServer();
 
@@ -99,7 +104,7 @@ namespace MicroServiceFabric.Bootstrap.StatelessServices.Owin
 
         public Task CloseAsync(CancellationToken cancellationToken)
         {
-            _eventSource.ServiceMessage(_serviceContext, "Closing web server");
+            _eventSource.ServiceMessage(_serviceContext, "Closing web server for endpoint {0}", _endpointName);
 
             StopWebServer();
 
@@ -108,7 +113,7 @@ namespace MicroServiceFabric.Bootstrap.StatelessServices.Owin
 
         public void Abort()
         {
-            _eventSource.ServiceMessage(_serviceContext, "Aborting web server");
+            _eventSource.ServiceMessage(_serviceContext, "Aborting web server for endpoint {0}", _endpointName);
 
             StopWebServer();
         }
