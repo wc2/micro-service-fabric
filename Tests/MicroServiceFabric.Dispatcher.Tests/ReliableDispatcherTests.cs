@@ -6,6 +6,7 @@ using MicroServiceFabric.Bootstrap.StatefulServices.Data;
 using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Data.Collections;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using Xunit;
 
 namespace MicroServiceFabric.Dispatcher.Tests
@@ -133,6 +134,71 @@ namespace MicroServiceFabric.Dispatcher.Tests
             await DispatcherCompletionAsync(task).ConfigureAwait(false);
         }
 
+        [Fact]
+        public async Task RunAsync_AbortsTransaction_WhenExecutionOfDispatcherTaskFailed()
+        {
+            var item = Substitute.For<object>();
+            var items = new[] {item};
+            var transaction = Substitute.For<ITransaction>();
+
+            var dispatcherTask = Substitute.For<DispatcherTask<object>>();
+            dispatcherTask
+                .Invoke(transaction, item, Arg.Any<CancellationToken>())
+                .Throws(new Exception("An inner random exception was thrown"));
+
+            var transactionFactory = Substitute.For<ITransactionFactory>();
+            transactionFactory
+                .Create()
+                .Returns(Substitute.For<ITransaction>(), transaction, Substitute.For<ITransaction>());
+
+            Task task;
+            using (var reliableDispatcher = CreateReliableDispatcher(CreateReliableQueue(items), transactionFactory))
+            {
+                task = reliableDispatcher.RunAsync(dispatcherTask, CancellationToken.None);
+            }
+
+            await DispatcherCompletionAsync(task).ConfigureAwait(false);
+
+            transaction
+                .Received(1)
+                .Abort();
+
+            await transaction
+                .DidNotReceive()
+                .CommitAsync()
+                .ConfigureAwait(false);
+        }
+
+        [Fact]
+        public async Task RunAsync_RemovesItemFromQueue_WhenExecutionOfDispatcherTaskFailed()
+        {
+            var items = new[] {Substitute.For<object>()};
+            var transaction = Substitute.For<ITransaction>();
+
+            var dispatcherTask = Substitute.For<DispatcherTask<object>>();
+            dispatcherTask
+                .Invoke(Arg.Any<ITransaction>(), Arg.Any<object>(), Arg.Any<CancellationToken>())
+                .Throws(new Exception("An inner random exception was thrown"));
+
+            var transactionFactory = Substitute.For<ITransactionFactory>();
+            transactionFactory
+                .Create()
+                .Returns(Substitute.For<ITransaction>(), Substitute.For<ITransaction>(), transaction, Substitute.For<ITransaction>());
+
+            Task task;
+            using (var reliableDispatcher = CreateReliableDispatcher(CreateReliableQueue(items), transactionFactory))
+            {
+                task = reliableDispatcher.RunAsync(dispatcherTask, CancellationToken.None);
+            }
+
+            await DispatcherCompletionAsync(task).ConfigureAwait(false);
+
+            await transaction
+                .Received(1)
+                .CommitAsync()
+                .ConfigureAwait(false);
+        }
+
         [Theory]
         [InlineData(1)]
         [InlineData(2)]
@@ -140,7 +206,10 @@ namespace MicroServiceFabric.Dispatcher.Tests
         public async Task RunAsync_DispatchesItemsAlreadyInQueue(int numberOfItemsAlreadyInQueue)
         {
             var dispatcherTask = Substitute.For<DispatcherTask<object>>();
-            var items = Enumerable.Range(1, numberOfItemsAlreadyInQueue).Select(i => Substitute.For<object>()).ToArray();
+            var items = Enumerable
+                .Range(1, numberOfItemsAlreadyInQueue)
+                .Select(i => Substitute.For<object>())
+                .ToArray();
 
             Task task;
             using (var reliableDispatcher = CreateReliableDispatcher(CreateReliableQueue(items)))
@@ -226,7 +295,8 @@ namespace MicroServiceFabric.Dispatcher.Tests
             await DispatcherCompletionAsync(task).ConfigureAwait(false);
         }
 
-        private static IReliableDispatcher<object> CreateReliableDispatcher(IReliableQueue<object> reliableQueue = null,
+        private static IReliableDispatcher<object> CreateReliableDispatcher(
+            IReliableQueue<object> reliableQueue = null,
             ITransactionFactory transactionFactory = null)
         {
             return new ReliableDispatcher<object>(
