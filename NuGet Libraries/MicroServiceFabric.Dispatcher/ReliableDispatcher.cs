@@ -55,13 +55,42 @@ namespace MicroServiceFabric.Dispatcher
                 await MessageIsEnqueuedAsync().ConfigureAwait(false);
                 _tokenSource.Token.ThrowIfCancellationRequested();
 
+                bool taskDispatched;
                 using (var transaction = _transactionFactory.Create())
                 {
                     var item = await GetNextItem(transaction).ConfigureAwait(false);
-
-                    await dispatcherTask(transaction, item, _tokenSource.Token).ConfigureAwait(false);
-                    await transaction.CommitAsync().ConfigureAwait(false);
+                    taskDispatched = await TryDispatchTaskAsync(dispatcherTask, transaction, item).ConfigureAwait(false);
                 }
+
+                if (!taskDispatched)
+                {
+                    await DequeueItemAsync().ConfigureAwait(false);
+                }
+            }
+        }
+
+        private async Task<bool> TryDispatchTaskAsync(DispatcherTask<T> dispatcherTask, ITransaction transaction, T item)
+        {
+            var success = true;
+            try
+            {
+                await dispatcherTask(transaction, item, _tokenSource.Token).ConfigureAwait(false);
+                await transaction.CommitAsync().ConfigureAwait(false);
+            }
+            catch
+            {
+                transaction.Abort();
+                success = false;
+            }
+            return success;
+        }
+
+        private async Task DequeueItemAsync()
+        {
+            using (var transaction = _transactionFactory.Create())
+            {
+                await GetNextItem(transaction).ConfigureAwait(false);
+                await transaction.CommitAsync().ConfigureAwait(false);
             }
         }
 
