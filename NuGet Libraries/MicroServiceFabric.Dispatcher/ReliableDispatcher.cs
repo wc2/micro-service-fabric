@@ -59,41 +59,39 @@ namespace MicroServiceFabric.Dispatcher
                 using (var transaction = _transactionFactory.Create())
                 {
                     var item = await GetNextItem(transaction).ConfigureAwait(false);
-                    taskDispatched = await TryDispatchTask(dispatcherTask, transaction, item).ConfigureAwait(false);
-
-                    if (taskDispatched)
-                    {
-                        await transaction.CommitAsync().ConfigureAwait(false);
-                    }
-                    else
-                    {
-                        transaction.Abort();
-                    }
+                    taskDispatched = await TryDispatchTaskAsync(dispatcherTask, transaction, item).ConfigureAwait(false);
                 }
 
                 if (!taskDispatched)
                 {
-                    using (var transaction = _transactionFactory.Create())
-                    {
-                        await GetNextItem(transaction).ConfigureAwait(false);
-                        await transaction.CommitAsync().ConfigureAwait(false);
-                    }
+                    await DequeueItemAsync().ConfigureAwait(false);
                 }
             }
         }
 
-        private async Task<bool> TryDispatchTask(DispatcherTask<T> dispatcherTask, ITransaction transaction, T item)
+        private async Task<bool> TryDispatchTaskAsync(DispatcherTask<T> dispatcherTask, ITransaction transaction, T item)
         {
             var success = true;
             try
             {
                 await dispatcherTask(transaction, item, _tokenSource.Token).ConfigureAwait(false);
+                await transaction.CommitAsync().ConfigureAwait(false);
             }
             catch
             {
+                transaction.Abort();
                 success = false;
             }
             return success;
+        }
+
+        private async Task DequeueItemAsync()
+        {
+            using (var transaction = _transactionFactory.Create())
+            {
+                await GetNextItem(transaction).ConfigureAwait(false);
+                await transaction.CommitAsync().ConfigureAwait(false);
+            }
         }
 
         private async Task MessageIsEnqueuedAsync()
