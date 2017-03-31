@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Data.Collections;
 using Microsoft.ServiceFabric.Data.Notifications;
+using MicroServiceFabric.CodeContracts;
 
 namespace MicroServiceFabric.Bootstrap.StatefulServices.Data
 {
@@ -13,9 +14,11 @@ namespace MicroServiceFabric.Bootstrap.StatefulServices.Data
     {
         private readonly Lazy<IReliableDictionary<TKey, TValue>> _lazyReliableDictionary;
 
-        public LazyReliableDictionary(Lazy<IReliableDictionary<TKey, TValue>> lazyReliableDictionary)
+        public LazyReliableDictionary(Func<IReliableDictionary<TKey, TValue>> dictionaryFactory)
         {
-            _lazyReliableDictionary = lazyReliableDictionary;
+            Requires.IsNotNull(dictionaryFactory, nameof(dictionaryFactory));
+
+            _lazyReliableDictionary = new Lazy<IReliableDictionary<TKey, TValue>>(dictionaryFactory);
         }
 
         Uri IReliableState.Name
