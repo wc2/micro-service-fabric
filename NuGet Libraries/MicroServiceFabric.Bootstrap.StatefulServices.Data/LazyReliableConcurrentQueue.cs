@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Data.Collections.Preview;
+using MicroServiceFabric.CodeContracts;
 
 namespace MicroServiceFabric.Bootstrap.StatefulServices.Data
 {
@@ -10,9 +11,11 @@ namespace MicroServiceFabric.Bootstrap.StatefulServices.Data
     {
         private readonly Lazy<IReliableConcurrentQueue<T>> _wrappedInstance;
 
-        public LazyReliableConcurrentQueue(Lazy<IReliableConcurrentQueue<T>> wrappedInstance)
+        public LazyReliableConcurrentQueue(Func<IReliableConcurrentQueue<T>> queueFactory)
         {
-            _wrappedInstance = wrappedInstance;
+            Requires.IsNotNull(queueFactory, nameof(queueFactory));
+
+            _wrappedInstance = new Lazy<IReliableConcurrentQueue<T>>(queueFactory);
         }
 
         public Uri Name => _wrappedInstance.Value.Name;

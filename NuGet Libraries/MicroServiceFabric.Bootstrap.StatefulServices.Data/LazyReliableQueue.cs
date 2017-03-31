@@ -11,11 +11,11 @@ namespace MicroServiceFabric.Bootstrap.StatefulServices.Data
     {
         private readonly Lazy<IReliableQueue<T>> _wrappedInstance;
 
-        public LazyReliableQueue(Lazy<IReliableQueue<T>> wrappedInstance)
+        public LazyReliableQueue(Func<IReliableQueue<T>> wrappedInstance)
         {
             Requires.IsNotNull(wrappedInstance, nameof(wrappedInstance));
 
-            _wrappedInstance = wrappedInstance;
+            _wrappedInstance = new Lazy<IReliableQueue<T>>(wrappedInstance);
         }
 
         public Uri Name => _wrappedInstance.Value.Name;
