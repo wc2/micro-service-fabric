@@ -27,7 +27,7 @@ namespace MicroServiceFabric.Bootstrap.StatefulServices
 
             try
             {
-                var container = ConfigureContainer(context);
+                var container = GetContainer(context);
 
                 eventSource = container.GetInstance<IServiceEventSource>();
                 eventSource.ServiceTypeRegistered(Process.GetCurrentProcess().Id, Naming.GetServiceName<TService>());
@@ -42,7 +42,7 @@ namespace MicroServiceFabric.Bootstrap.StatefulServices
             return service;
         }
 
-        private static Container ConfigureContainer(StatefulServiceContext context)
+        private static Container GetContainer(StatefulServiceContext context)
         {
             var container = new Container();
             var stateManager = new Lazy<ReliableStateManager>(() => new ReliableStateManager(context));
