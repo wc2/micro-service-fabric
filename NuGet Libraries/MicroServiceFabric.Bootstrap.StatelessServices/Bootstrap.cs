@@ -26,7 +26,7 @@ namespace MicroServiceFabric.Bootstrap.StatelessServices
 
             try
             {
-                var container = ConfigureContainer(context);
+                var container = GetContainer(context);
 
                 eventSource = container.GetInstance<IServiceEventSource>();
                 eventSource.ServiceTypeRegistered(Process.GetCurrentProcess().Id, Naming.GetServiceName<TService>());
@@ -41,7 +41,7 @@ namespace MicroServiceFabric.Bootstrap.StatelessServices
             return service;
         }
 
-        private static Container ConfigureContainer(StatelessServiceContext context)
+        private static Container GetContainer(StatelessServiceContext context)
         {
             var container = new Container();
 

@@ -254,7 +254,7 @@ namespace MicroServiceFabric.Bootstrap.StatefulServices.Data.Tests
 
         private static IReliableQueue<T> CreateLazyReliableQueue<T>(IReliableQueue<T> wrappedInstance)
         {
-            return new LazyReliableQueue<T>(new Lazy<IReliableQueue<T>>(() => wrappedInstance));
+            return new LazyReliableQueue<T>(() => wrappedInstance);
         }
     }
 }
